@@ -1,0 +1,6 @@
+
+--color-dorado: #EED284;
+--color-dorado-oscuro: #DAB561;
+--color-negro: #333333;
+--color-blanco: #FFFFFF;
+--color-verde: #355B38;

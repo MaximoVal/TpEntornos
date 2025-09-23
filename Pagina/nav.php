@@ -1,0 +1,41 @@
+<style>
+    #boton-nav{
+            background-color: #DAB561;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+
+        }
+        
+        #boton-nav:hover
+        {
+            background-color: #c29f4e;
+            transform: scale(1.1);
+            color: white;
+        }
+</style>
+<nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.php" style="margin=0;border:none;">
+                <img src="../Footage/Logo.png" alt="Paseo de la Fortuna Logo"style="margin=0;border:none;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="background-color: #DAB561; border: none;">
+              <img src="../Footage/menu.png" alt="Desplegar menu">  
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="sobreNosotros.php">Sobre Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.php">Iniciar Sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacto.php">Contacto</a>
+                    </li>
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Buscar tiendas..." aria-label="Search">
+                    <button class="btn" id="boton-nav" type="submit">Buscar</button>
+                </form>
+            </div>
+        </div>
+    </nav>
