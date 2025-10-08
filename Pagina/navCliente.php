@@ -1,3 +1,6 @@
+<head>
+    <link rel="stylesheet" href="../Estilos/estilos.css">
+</head>
 <style>
     #boton-nav{
             background-color: #DAB561;
@@ -12,6 +15,7 @@
             color: white;
         }
 </style>
+
 <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid">
             <a class="navbar-brand" href="index.php" style="margin=0;border:none;">
@@ -32,7 +36,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarCuenta">
                             <li>
-                                <a class="dropdown-item" href="administrar_cuenta.php">Administrar Cuenta</a>
+                                <a class="dropdown-item" href="cuentaUsuario.php">Administrar Cuenta</a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>

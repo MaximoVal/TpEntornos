@@ -2,9 +2,18 @@
 
 
 
-function consultaSQL($consulta_sql){
+function consultaUsuarios($consulta_sql){
     $conexion = mysqli_connect("localhost", "root", "");
-    mysqli_select_db($conexion, "registro_usuarios");
+    mysqli_select_db($conexion, "paseofortuna");
+
+    $resultado = mysqli_query($conexion, $consulta_sql);
+    mysqli_close($conexion);
+    return $resultado;
+}
+
+function consultaLocales($consulta_sql){
+    $conexion = mysqli_connect("localhost", "root", "");
+    mysqli_select_db($conexion, "paseofortuna");
 
     $resultado = mysqli_query($conexion, $consulta_sql);
     mysqli_close($conexion);

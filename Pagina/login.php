@@ -1,15 +1,15 @@
 <?php
-session_start();
-include("funciones.php");
-$mensaje="";
+    session_start();
+    include("funciones.php");
+    $mensaje="";
 
 if(isset($_POST['enviar'])){
     $email = $_POST['email'];
     $password = $_POST['contraseña'];
 
     // Buscar usuario en la base
-    $sql = "SELECT * FROM usuarios WHERE email='$email'";
-    $resultado = consultaSQL($sql);
+    $sql = "SELECT * FROM usuarios WHERE nombreUsuario='$email'";
+    $resultado = consultaUsuarios($sql);
 
     if(mysqli_num_rows($resultado) > 0){
         // El usuario existe, ahora validamos contraseña
@@ -22,15 +22,16 @@ if(isset($_POST['enviar'])){
             $mensaje="Contraseña Incorrecta";
         }
     } else {
-        // El usuario no existe → lo registramos
-        $sqlInsert = "INSERT INTO usuarios (email, contraseña) VALUES ('$email', '$password')";
-        if(consultaSQL($sqlInsert)){
-            $_SESSION['usuario'] = $email;
-            header("Location: index.php");
-            exit();
-        } else {
-            echo "<p>Error al registrar usuario</p>";
-        }
+        // El usuario no existe
+        $mensaje="Usuario no registrado, por favor regístrese.";
+        // $sqlInsert = "INSERT INTO usuarios (email, contraseña) VALUES ('$email', '$password')";
+        // if(consultaSQL($sqlInsert)){
+        //     $_SESSION['usuario'] = $email;
+        //     header("Location: index.php");
+        //     exit();
+        // } else {
+        //     echo "<p>Error al registrar usuario</p>";
+        // }
     }
 }
 ?>
@@ -45,7 +46,7 @@ if(isset($_POST['enviar'])){
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../Estilos/estilos.css">
-    <link rel="stylesheet" href="../Estilos/loginEstilos.css">
+    <link rel="stylesheet" href="../Estilos/loginEstilo.css">
 
 </head>
 <body>
@@ -63,9 +64,7 @@ if(isset($_POST['enviar'])){
                     <li class="nav-item">
                         <a class="nav-link" href="index.php">Inicio</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="sobreNosotros.php">Sobre Nosotros</a>
-                    </li>
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="contacto.php">Contacto</a>
                     </li>
@@ -75,7 +74,7 @@ if(isset($_POST['enviar'])){
     </nav>
 
     <!-- Contenedor principal centrado -->
-    <div class="container-fluid main-container">
+    <div class="container-fluid main-container" style="background-image: url('../Footage/Paseo 4.png');background-size: cover; background-position: center; min-height: 100vh; display: flex; justify-content: center; align-items: center; opacity: 0.95;">
         <div class="card login-card shadow-lg p-4" style="width: 400px; max-width: 90vw;">
             <div class="card-body">
                 <form action="" method="POST">
@@ -108,13 +107,6 @@ if(isset($_POST['enviar'])){
                         </div>
                     </div>
 
-                    <div class="mb-4 form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
-                            Recordarme
-                        </label>
-                    </div>
-
                     <button type="submit" class="btn btn-primary w-100 mb-3" name="enviar">
                         <i class="fas fa-sign-in-alt me-2"></i>
                         Ingresar
@@ -125,7 +117,11 @@ if(isset($_POST['enviar'])){
                             <a href="#" class="text-decoration-none">¿Olvidaste tu contraseña?</a>
                         </small>
                     </div>
+                    
                 </form>
+                <hr>
+                        <p class="text-center">¿No tenes usuario?  <a href="registro.php">Registrarse ahora</a></p>
+                    
             </div>
         </div>
     </div>

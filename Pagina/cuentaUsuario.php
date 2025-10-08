@@ -1,0 +1,202 @@
+<?php
+    session_start();
+    include("funciones.php"); // conexión a la BD
+
+    $email = $_SESSION['usuario'];
+
+    // Consultamos los datos del usuario
+    $sql = "SELECT nombre, apellido, nombreUsuario, contraseña FROM usuarios WHERE nombreUsuario='$email'";
+    $resultado = consultaUsuarios($sql);
+
+    if($resultado && mysqli_num_rows($resultado) > 0){
+        $usuario = mysqli_fetch_assoc($resultado);
+    } else {
+        echo "No se encontraron datos del usuario.";
+        exit();
+    }
+
+
+    $mensaje = "";
+
+    if(isset($_POST['enviar-cambios'])){
+        // Tomamos los campos, si están vacíos usamos los actuales
+        $nombre = !empty($_POST['nombre']) ? $_POST['nombre'] : $usuario['nombre'];
+        $apellido = !empty($_POST['apellido']) ? $_POST['apellido'] : $usuario['apellido'];
+        $emailNuevo = !empty($_POST['email']) ? $_POST['email'] : $usuario['nombreUsuario'];
+
+        $contraseñaActual = $_POST['contraseña-actual'] ?? '';
+        $contraseñaNueva = $_POST['contraseña-nueva'] ?? '';
+
+        // Verificar si se quiere cambiar la contraseña
+        if(!empty($contraseñaNueva)){
+            if($contraseñaActual === $usuario['contraseña']){
+                // Contraseña actual correcta, actualizamos todo incluyendo la nueva contraseña
+                $sqlActualizar = "UPDATE usuarios 
+                                SET nombre='$nombre', apellido='$apellido', nombreUsuario='$emailNuevo', contraseña='$contraseñaNueva' 
+                                WHERE nombreUsuario='$email'";
+                consultaUsuarios($sqlActualizar);
+                $mensaje = "Datos y contraseña actualizados correctamente.";
+            } else {
+                // Contraseña actual incorrecta
+                $mensaje = "Contraseña actual incorrecta. No se actualizó la contraseña.";
+                // Solo actualizamos los demás campos
+                $sqlActualizar = "UPDATE usuarios 
+                                SET nombre='$nombre', apellido='$apellido', nombreUsuario='$emailNuevo' 
+                                WHERE nombreUsuario='$email'";
+                consultaUsuarios($sqlActualizar);
+            }
+        } else {
+            // No se cambia la contraseña, solo actualizamos otros campos
+            $sqlActualizar = "UPDATE usuarios 
+                            SET nombre='$nombre', apellido='$apellido', nombreUsuario='$emailNuevo' 
+                            WHERE nombreUsuario='$email'";
+            consultaUsuarios($sqlActualizar);
+            $mensaje = "Datos actualizados correctamente.";
+        }
+
+        // Actualizamos la variable de sesión si se cambió el email
+        $_SESSION['usuario'] = $emailNuevo;
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    }
+
+    if(isset($_POST['cerrar-sesion'])){
+        
+        header("Location: cerrar_sesion.php");
+        exit();
+    }
+
+    if(isset($_POST['eliminar-cuenta'])){
+        $sqlEliminar = "DELETE FROM usuarios WHERE nombreUsuario='$email'";
+        consultaUsuarios($sqlEliminar);
+        session_destroy();
+        header("Location: index.php");
+        exit();
+    }
+?>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración de Cuenta</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../Estilos/estilos.css">
+    <link rel="stylesheet" href="../Estilos/usuarioCuentaEstilos.css">
+
+    
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img src="../Footage/Logo.png" alt="Paseo de la Fortuna Logo" style="margin=0;border:none;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="sobreNosotros.php">Sobre Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacto.php">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Panel de Administración</h1>
+            <p>Gestiona tu cuenta y configuración personal</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="user-info">
+                    <h3>
+                        <i class="fas fa-user-circle me-2"></i>
+                        <br>
+                        <?php echo ($usuario['nombre'] . ' ' . $usuario['apellido']); ?>
+                    </h3>
+                    <p><?php echo ($usuario['nombreUsuario'])?></p>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <h2 class="section-title">Información Personal</h2>
+                
+                <!-- Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">127</div>
+                        <div>Días Activo</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">15</div>
+                        <div>Promociones usadas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">98%</div>
+                        <div>Promociones denegadas</div>
+                    </div>
+                </div>
+
+                <!-- Profile Form -->
+                <form action="" method="POST" class="profile-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" id="nombre" value="<?php echo ($usuario['nombre'])?>" name="nombre">
+                        </div>
+                        <div class="form-group">
+                            <label for="apellido">Apellido</label>
+                            <input type="text" id="apellido" value="<?php echo ($usuario['apellido'])?>" name="apellido">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" value="<?php echo ($usuario['nombreUsuario'])?>" name="email">
+                        </div>
+                        <br>
+                    </div>
+                    <div class="security-section">
+                        <h3 style="margin-bottom: 15px; color: var(--color-verde);">Seguridad de la Cuenta</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="password-actual">Contraseña Actual</label>
+                                <input type="password" id="password-actual" placeholder="Ingresa tu contraseña actual" name="contraseña-actual">
+                            </div>
+                            <div class="form-group">
+                                <label for="password-nueva">Nueva Contraseña</label>
+                                <input type="password" id="password-nueva" placeholder="Mínimo 8 caracteres" name="contraseña-nueva">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" name="enviar-cambios">Guardar Cambios</button>
+                        <a href="cerrar_sesion.php" class="btn btn-secondary">Cerrar Sesion</a>
+
+                        <button type="button" class="btn btn-danger" style="margin-left: auto;" name="eliminar-cuenta">Eliminar Cuenta</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
