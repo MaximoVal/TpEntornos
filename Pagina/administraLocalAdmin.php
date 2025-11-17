@@ -61,12 +61,13 @@ $telefono = "+54 11 1234-5678";
       <aside class="col-12 col-md-3 mb-3">
         <div class="card sidebar-links">
           <div class="card-body d-flex flex-column justify-content-start">
-            <h6 class="card-title">Vínculos</h6>
-            <ul class="nav flex-column">
-              <li class="nav-item"><a class="nav-link" href="#">Vinculo</a></li>
-              <li class="nav-item"><a class="nav-link" href="#">Vinculo</a></li>
-              <li class="nav-item"><a class="nav-link" href="#">Vinculo</a></li>
-            </ul>
+            <h3 class="card-title title">Panel administrador </h3>
+             <div class="list-group">
+                <a href="administraLocalAdmin.php" class="list-group-item list-group-item-action active">Administrar locales</a>
+                <a href="eliminaLocalAdmin.php" class="list-group-item list-group-item-action">Eliminar local</a>
+                <a href="creaLocalAdmin.php" class="list-group-item list-group-item-action">Crear local</a>
+                <a href="duenosAdmin(SDB).php" class="list-group-item list-group-item-action ">Administrar dueños</a>
+            </div>
           </div>
         </div>
       </aside>

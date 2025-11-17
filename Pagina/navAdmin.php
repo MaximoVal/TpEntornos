@@ -31,7 +31,16 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarCuenta">
                             <li>
-                                <a class="dropdown-item" href="panelAdmin.php">Panel de Control</a>
+                                <a class="dropdown-item" href="administraLocalAdmin.php">Administrar Locales</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="duenosAdmin(SDB).php">Administrar Dueños</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="eliminaLocalAdmin.php">Eliminar local</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="creaLocalAdmin.php">Crear local</a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>

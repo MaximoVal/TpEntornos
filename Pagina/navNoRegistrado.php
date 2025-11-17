@@ -34,6 +34,7 @@
         transform: scale(1.05);
         }
 </style>  
+
 <nav class="navbar navbar-expand-lg navbar-custom">
     <div class="container-fluid">
 
@@ -49,12 +50,12 @@
 
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav align-items-center">
-        <li class="nav-item"><a class="nav-link px-3 fw-semibold" href="#" style="color: #333;">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link px-3 fw-semibold" href="index.php" style="color: #333;">Inicio</a></li>
         <li class="nav-item"><a class="nav-link px-3 fw-semibold" href="contacto.php" style="color: #333;">Contacto</a></li>
 
 
         <li class="nav-item ms-3">
-        <a href="#" class="nav-link p-0">
+        <a href="login.php" class="nav-link p-0">
             <div class="d-flex align-items-center justify-content-center user-icon-wrapper">
             <i class="bi bi-person-fill"></i>
             </div>

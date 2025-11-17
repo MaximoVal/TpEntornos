@@ -26,45 +26,22 @@ $telefono = "+54 11 1234-5678";
 <body>
 
     <!-- HEADER -->
-    <header class="py-3" style="background: linear-gradient(90deg, var(--color-dorado), var(--color-dorado-oscuro));">
-    <nav class="navbar navbar-expand-lg navbar-custom">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="index.html">
-                <img src="../Footage/Logo.png" alt="Paseo de la Fortuna Logo" style="margin=0;border:none;" >
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="sobreNosotros.php">Sobre Nosotros</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contacto.php">Contacto</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-        </div>
-    </header>
-
+    <?php include 'navAdmin.php'; ?>
     <!-- CONTENEDOR PRINCIPAL -->
     <main class="container-fluid my-4">
         <div class="row">
             <!-- LADO IZQUIERDO - VÍNCULOS -->
             <aside class="col-md-3 col-lg-2 mb-4">
-                <div class="p-3 bg-white shadow rounded-3">
-                    <h6 class="mb-3" style="color: var(--color-negro); font-weight:600;">Menú</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-decoration-none d-block py-2" style="color: var(--color-gris);">Vínculo 1</a></li>
-                        <li><a href="#" class="text-decoration-none d-block py-2" style="color: var(--color-gris);">Vínculo 2</a></li>
-                        <li><a href="#" class="text-decoration-none d-block py-2" style="color: var(--color-gris);">Vínculo 3</a></li>
-                    </ul>
+                <div class="card sidebar-links">
+                <div class="card-body d-flex flex-column justify-content-start">
+                    <h3 class="card-title title">Panel administrador </h3>
+                    <div class="list-group">
+                        <a href="administraLocalAdmin.php" class="list-group-item list-group-item-action ">Administrar locales</a>
+                        <a href="eliminaLocalAdmin.php" class="list-group-item list-group-item-action ">Eliminar local</a>
+                        <a href="creaLocalAdmin.php" class="list-group-item list-group-item-action ">Crear local</a>
+                        <a href="duenosAdmin(SDB).php" class="list-group-item list-group-item-action active">Administrar dueños</a>
+                    </div>
+                </div>
                 </div>
             </aside>
 
