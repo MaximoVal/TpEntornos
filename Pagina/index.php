@@ -129,22 +129,64 @@
             </div>
         </div>
     </section>
-    <aside>
-        <div class="card mb-3" style="max-width: 540px;">
-            <div class="row g-0">
-                <div class="col-md-4">
-                <img src="..." class="img-fluid rounded-start" alt="...">
-                </div>
-                <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
-                </div>
-                </div>
-            </div>
-        </div>
-    </aside>
+<div id="carouselNovedades" class="carousel slide mb-4" data-bs-ride="carousel">
+  <!-- Indicadores -->
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselNovedades" data-bs-slide-to="0" class="active"></button>
+    <button type="button" data-bs-target="#carouselNovedades" data-bs-slide-to="1"></button>
+    <button type="button" data-bs-target="#carouselNovedades" data-bs-slide-to="2"></button>
+    <button type="button" data-bs-target="#carouselNovedades" data-bs-slide-to="3"></button>
+  </div>
+
+  <!-- Slides -->
+  <div class="carousel-inner rounded-3 shadow-sm">
+    <!-- Novedad 1 -->
+    <div class="carousel-item active">
+      <img src="https://picsum.photos/1200/400?random=1" class="d-block w-100" alt="Nueva apertura de tienda">
+      <div class="carousel-caption bg-dark bg-opacity-50 rounded p-3">
+        <h5>Apertura de Zara Home</h5>
+        <p>¡Descubrí la nueva tienda de decoración en el segundo nivel del shopping!</p>
+      </div>
+    </div>
+
+    <!-- Novedad 2 -->
+    <div class="carousel-item">
+      <img src="https://picsum.photos/1200/400?random=2" class="d-block w-100" alt="Nuevo patio de comidas">
+      <div class="carousel-caption bg-dark bg-opacity-50 rounded p-3">
+        <h5>Nuevo Patio de Comidas</h5>
+        <p>Más opciones gourmet, incluyendo cocina internacional y cafeterías renovadas.</p>
+      </div>
+    </div>
+
+    <!-- Novedad 3 -->
+    <div class="carousel-item">
+      <img src="https://picsum.photos/1200/400?random=3" class="d-block w-100" alt="Evento de moda">
+      <div class="carousel-caption bg-dark bg-opacity-50 rounded p-3">
+        <h5>Semana de la Moda</h5>
+        <p>Desfiles, descuentos y actividades especiales durante todo el fin de semana.</p>
+      </div>
+    </div>
+
+    <!-- Novedad 4 -->
+    <div class="carousel-item">
+      <img src="https://picsum.photos/1200/400?random=4" class="d-block w-100" alt="Promociones">
+      <div class="carousel-caption bg-dark bg-opacity-50 rounded p-3">
+        <h5>Promociones Especiales</h5>
+        <p>2x1 en cines, beneficios para socios y descuentos exclusivos en locales adheridos.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controles -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselNovedades" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+    <span class="visually-hidden">Anterior</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselNovedades" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+    <span class="visually-hidden">Siguiente</span>
+  </button>
+</div>
 
     <!-- Footer -->
     <?php include 'footer.php'; ?>
