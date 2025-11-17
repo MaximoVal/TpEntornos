@@ -1,10 +1,5 @@
 <?php
-    session_start(); 
-    if(!isset($_SESSION['usuario'])) {
-        include 'nav.php';   
-    } else {
-        include 'nav2.php';  
-    }
+    session_start();
     
     if(isset($_POST["enviar"])){
         $nombre = $_POST['nombre'];
@@ -33,6 +28,23 @@
 </head>
 
 <body>
+    <?php 
+
+        if(!isset($_SESSION['usuario'])) {
+            include 'navNoRegistrado.php';
+               
+        } else if($_SESSION['tipoUsuario'] == 'cliente') {
+            
+                include 'navCliente.php';  
+            }
+            
+        else if($_SESSION['tipoUsuario'] == 'dueño de local') {
+                include 'navDueño.php';  
+            }
+        else {
+                include 'navAdmin.php';  
+            }
+    ?>
     <!-- Header -->
     <div class="header-section" style="background-image: url('../Footage/Galeria2.png');">
         <div class="container">

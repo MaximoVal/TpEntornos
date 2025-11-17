@@ -9,13 +9,14 @@ if(isset($_POST['enviar'])){
 
     // Buscar usuario en la base
     $sql = "SELECT * FROM usuarios WHERE nombreUsuario='$email'";
-    $resultado = consultaUsuarios($sql);
+    $resultado = consultaSQL($sql);
 
     if(mysqli_num_rows($resultado) > 0){
         // El usuario existe, ahora validamos contraseña
         $usuario = mysqli_fetch_assoc($resultado);
         if($usuario['contraseña'] === $password){
             $_SESSION['usuario'] = $email;
+            $_SESSION['tipoUsuario'] = $usuario['tipoUsuario'];
             header("Location: index.php");
             exit();
         } else {

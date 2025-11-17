@@ -1,28 +1,36 @@
+<?php
+    session_set_cookie_params(0);
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paseo de la Fortuna - Shopping Center</title>
-    <link rel="stylesheet" href="../Estilos/estilos.css">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-
+    <link rel="stylesheet" href="../Estilos/estilos.css">
 </head>
 <body>
     
     <?php 
-        session_start(); 
 
         if(!isset($_SESSION['usuario'])) {
             include 'navNoRegistrado.php';   
-        } else {
-            if($_SESSION['tipoUsuario'] == 'cliente') {
+        } else if($_SESSION['tipoUsuario'] == 'cliente') {
+            
                 include 'navCliente.php';  
             }
             
-        }
+        else if($_SESSION['tipoUsuario'] == 'dueño de local') {
+                include 'navDueño.php';  
+            }
+        else {
+                include 'navAdmin.php';  
+            }
     ?>
 
     <!-- Carousel mejorado -->
@@ -46,11 +54,11 @@
                 <!-- Card 1: Tiendas -->
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
-                        <div class="card-img-placeholder">
-                            <img src="../Footage/logoNike.jpg" alt="Logo de Nike" class="imagenPromocion">
+                        <div class="card-img-placeholder imagenesPromoc" style="background-image: url('../Footage/Indumentaria.png'); background-size: cover; background-position: center;">
+                          INDUMENTARIA
                         </div>
                         <div class="card-body card-body-custom">
-                            <h5 class="card-title">Tiendas Nike</h5>
+                            <h5 class="card-title">Indumentaria</h5>
                             <p class="card-text">Descubre las últimas tendencias en moda, accesorios y mucho más en nuestras exclusivas tiendas de marcas reconocidas.</p>
                             <a href="#tiendas" class="btn btn-custom">Explorar Tiendas</a>
                         </div>
@@ -60,8 +68,8 @@
                 <!-- Card 2: Restaurantes -->
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
-                        <div class="card-img-placeholder">
-                          gastronomía
+                        <div class="card-img-placeholder" style="background-image: url('../Footage/PatioComida.png'); background-size: cover; background-position: center;">
+                          GASTRONOMIA
                         </div>
                         <div class="card-body card-body-custom">
                             <h5 class="card-title">Área Gastronómica</h5>
@@ -89,10 +97,11 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
                         <div class="card-img-placeholder">
-                            <img src="../Footage/McDonalds-logo.jpg" alt="Logo de McDonlads" class="imagenPromocion">
+                            <p>ELECTRODOMESTICO</p>
+                            <img src="../Footage/electrodomestico.jpg" alt="Logo de McDonlads" class="imagenPromocion">
                         </div>
                         <div class="card-body card-body-custom">
-                            <h5 class="card-title">Servicios Adicionales</h5>
+                            <h5 class="card-title">Electrodomesticos</h5>
                             <p class="card-text">Cajeros automáticos, estacionamiento gratuito, wifi gratis y muchos servicios más para tu comodidad.</p>
                             <a href="#servicios" class="btn btn-custom">Ver Servicios</a>
                         </div>
@@ -103,12 +112,13 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
                         <div class="card-img-placeholder">
-                            🎉 EVENTOS
+                            <p>ELECTRODOMESTICO</p>
+                            <img src="../Footage/electrodomestico.jpg" alt="Logo de McDonlads" class="imagenPromocion">
                         </div>
                         <div class="card-body card-body-custom">
-                            <h5 class="card-title">Eventos Especiales</h5>
-                            <p class="card-text">No te pierdas nuestros eventos especiales, promociones y actividades durante todo el año.</p>
-                            <a href="#eventos" class="btn btn-custom">Ver Eventos</a>
+                            <h5 class="card-title">Electrodomesticos</h5>
+                            <p class="card-text">Cajeros automáticos, estacionamiento gratuito, wifi gratis y muchos servicios más para tu comodidad.</p>
+                            <a href="#servicios" class="btn btn-custom">Ver Servicios</a>
                         </div>
                     </div>
                 </div>
@@ -117,12 +127,12 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
                         <div class="card-img-placeholder">
-                            🕒 HORARIOS
+                            🎉 SERVICIOS
                         </div>
                         <div class="card-body card-body-custom">
-                            <h5 class="card-title">Horarios de Atención</h5>
-                            <p class="card-text">Estamos abiertos todos los días para que disfrutes de la mejor experiencia de compras cuando lo desees.</p>
-                            <a href="#horarios" class="btn btn-custom">Ver Horarios</a>
+                            <h5 class="card-title">Servicios adicionaless</h5>
+                            <p class="card-text">No te pierdas nuestros eventos especiales, promociones y actividades durante todo el año.</p>
+                            <a href="#eventos" class="btn btn-custom">Ver Eventos</a>
                         </div>
                     </div>
                 </div>

@@ -1,55 +1,61 @@
 <?php
     session_start();
+    // NOTA: Asume que "funciones.php" contiene la definición de consultaSQL($sql)
+    // y que $conexion está disponible para mysqli_real_escape_string si se usa.
     include("funciones.php");
-    $mensaje="";
+    $mensaje = "";
+
+    // Verifica si se ha enviado el formulario
     if(isset($_POST['enviar'])){
         $email = $_POST['email'];
         $password = $_POST['contraseña'];
         $nombre = $_POST['nombre'];
         $apellido = $_POST['apellido'];
-        $tipo= $_POST['tipoUsuario'];
-
-
-            // Verificar si el usuario ya existe
-            $sql= "SELECT * FROM usuarios WHERE nombreUsuario='$email'";
-            $resultado = consultaUsuarios($sql);
         
-            if(mysqli_num_rows($resultado) > 0){
-                // El usuario ya existe
-                $mensaje = "El usuario ya está registrado. Por favor, inicie sesión.";
+        // Obtiene el valor del radio button seleccionado
+        $tipo = $_POST['tipoUsuario'];
+        echo "Tipo de usuario seleccionado: " . $tipo; // Línea de depuración
+        
+
+        // Verificar si el usuario ya existe
+        $sql = "SELECT * FROM usuarios WHERE nombreUsuario='$email'";
+        $resultado = consultaSQL($sql);
+        
+        if(mysqli_num_rows($resultado) > 0){
+            // El usuario ya existe
+            $mensaje = "El usuario ya está registrado. Por favor, inicie sesión.";
+        } else {
+            // *** CORRECCIÓN CRÍTICA: Se cambió el operador de ASIGNACIÓN (=) por COMPARACIÓN (==) ***
+            // Esto asegura que la lógica se ejecute solo si $tipo es IGUAL a 'cliente'.
+            if($tipo == 'cliente'){
+                // Lógica para Clientes (incluye campo categoriaCliente)
+                $sqlInsert = "INSERT INTO usuarios (nombre, apellido, nombreUsuario, contraseña, tipoUsuario, categoriaCliente) VALUES ('$nombre', '$apellido', '$email', '$password', '$tipo', 'Inicial')";
+
+                if(consultaSQL($sqlInsert)){
+                    $_SESSION['usuario'] = $email;
+                    $_SESSION['tipoUsuario'] = $tipo;
+                    header("Location: index.php");
+                    exit();
+                } else {
+                    $mensaje = "Error al registrar usuario. Inténtelo de nuevo.";
+                }
             } else {
-                if($tipo = 'cliente'){
-                    $sqlInsert = "INSERT INTO usuarios (nombre, apellido, nombreUsuario, contraseña, tipoUsuario, categoriaCliente) VALUES ('$nombre', '$apellido', '$email', '$password', '$tipo', 'Inicial')";
+                // Lógica para Dueño o Administrador (cubre el 'else')
+                // *** CORRECCIÓN: Se añadió 'tipoUsuario' en el INSERT para que la sentencia sea válida. ***
+                $sqlInsert = "INSERT INTO usuarios (nombre, apellido, nombreUsuario, contraseña, tipoUsuario) VALUES ('$nombre', '$apellido', '$email', '$password', '$tipo')";
 
-                    if(consultaUsuarios($sqlInsert)){
-                        $_SESSION['usuario'] = $email;
-                        $_SESSION['tipoUsuario'] = $tipo;
-                        header("Location: index.php");
-                        exit();
-                    } else {
-                        $mensaje = "Error al registrar usuario. Inténtelo de nuevo.";
-                    }
-                }else{
-                    $sqlInsert = "INSERT INTO usuarios (nombre, apellido, nombreUsuario, contraseña) VALUES ('$nombre', '$apellido', '$email', '$password', '$tipo')";
-
-                    if(consultaUsuarios($sqlInsert)){
-                        $_SESSION['usuario'] = $email;
-                        $_SESSION['tipoUsuario'] = $tipo;
-                        header("Location: index.php");
-                        exit();
-                    } else {
-                        $mensaje = "Error al registrar usuario. Inténtelo de nuevo.";
-                    }
+                if(consultaSQL($sqlInsert)){
+                    $_SESSION['usuario'] = $email;
+                    $_SESSION['tipoUsuario'] = $tipo;
+                    header("Location: index.php");
+                    exit();
+                } else {
+                    $mensaje = "Error al registrar usuario. Inténtelo de nuevo.";
                 }
             }
-            
-
         }
-    
-
-
+    }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -64,7 +70,6 @@
 
 </head>
 <body>
-    <!-- Navbar fijo en la parte superior -->
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid">
             <a class="navbar-brand" href="index.html">
@@ -89,7 +94,6 @@
         </div>
     </nav>
 
-    <!-- Contenedor principal centrado -->
     <div class="container-fluid main-container" style="background-image: url('../Footage/Galeria3.png');background-size: cover; background-position: center; min-height: 100vh; display: flex; justify-content: center; align-items: center; opacity: 0.95;">
         <div class="card login-card shadow-lg p-4" style="width: 500px; max-width: 90vw;">
             <div class="card-body">
@@ -125,17 +129,22 @@
                         <input type="password" class="form-control" id="exampleInputPassword1" 
                                name="contraseña" placeholder="Tu contraseña" required>
                         
-                        <!-- Simulación del mensaje de error PHP -->
-                        <div class="form-text text-danger" 
-                            <?php echo $mensaje;?>>
+                        <div class="form-text text-danger">
                             <?php if(isset($mensaje)) echo $mensaje; ?>
                         </div>
                     </div>
-                    <select name="tipoUsuario" class="form-select mb-3">
-                        <option value="cliente">Cliente</option>
-                        <option value="dueño">Dueño de local</option>
-                        <option value="administrador">Administrador</option>
-                    </select>
+                    
+                    <div class="mb-3">
+                        <p>Seleccione tipo de usuario</p>
+                        
+                        <input type="radio" id="cliente" name="tipoUsuario" value="cliente" checked>
+                        <label for="cliente">Cliente</label><br>
+                        
+                        <input type="radio" id="dueño" name="tipoUsuario" value="dueño de local">
+                        <label for="dueño">Dueño</label><br> 
+                        
+                        <input type="radio" id="administrador" name="tipoUsuario" value="administrador">
+                        <label for="administrador">Administrador</label><br> </div>
 
                     <button type="submit" class="btn btn-primary w-100 mb-3" name="enviar">
                         <i class="fas fa-sign-in-alt me-2"></i>
@@ -144,8 +153,7 @@
                     
                 </form>
                 <hr>
-                        <p class="text-center">¿Ya tienes usuario?   <a href="login.php">Iniciar sesión</a></p>
-                    
+                <p class="text-center">¿Ya tienes usuario? <a href="login.php">Iniciar sesión</a></p>
             </div>
         </div>
     </div>

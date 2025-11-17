@@ -155,18 +155,18 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="nombre">Nombre</label>
-                            <input type="text" id="nombre" placeholder="<?php echo ($usuario['nombre'])?>" name="nombre">
+                            <input type="text" id="nombre" value="<?php echo ($usuario['nombre'])?>" name="nombre">
                         </div>
                         <div class="form-group">
                             <label for="apellido">Apellido</label>
-                            <input type="text" id="apellido" placeholder="<?php echo ($usuario['apellido'])?>" name="apellido">
+                            <input type="text" id="apellido" value="<?php echo ($usuario['apellido'])?>" name="apellido">
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <input type="email" id="email" placeholder="<?php echo ($usuario['nombreUsuario'])?>" name="email">
+                            <input type="email" id="email" value="<?php echo ($usuario['nombreUsuario'])?>" name="email">
                         </div>
                         <br>
                     </div>

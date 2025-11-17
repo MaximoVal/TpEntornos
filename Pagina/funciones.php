@@ -2,7 +2,7 @@
 
 
 
-function consultaUsuarios($consulta_sql){
+function consultaSQL($consulta_sql){
     $conexion = mysqli_connect("localhost", "root", "");
     mysqli_select_db($conexion, "paseofortuna");
 
