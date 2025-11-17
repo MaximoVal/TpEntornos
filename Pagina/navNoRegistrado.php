@@ -50,8 +50,7 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav align-items-center">
         <li class="nav-item"><a class="nav-link px-3 fw-semibold" href="#" style="color: #333;">Inicio</a></li>
-        <li class="nav-item"><a class="nav-link px-3 fw-semibold" href="#" style="color: #333;">Sobre Nosotros</a></li>
-        <li class="nav-item"><a class="nav-link px-3 fw-semibold" href="#" style="color: #333;">Contacto</a></li>
+        <li class="nav-item"><a class="nav-link px-3 fw-semibold" href="contacto.php" style="color: #333;">Contacto</a></li>
 
 
         <li class="nav-item ms-3">
