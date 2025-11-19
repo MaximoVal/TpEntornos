@@ -1,5 +1,19 @@
-
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="../Estilos/estilos.css">
+    
+</head>
 <style>
+    *
+    {
+        user-select:none;
+    }
+    :root {
+            --color-dorado: #EED284;
+            --color-dorado-oscuro: #DAB561;
+            --color-negro: #333333;
+            --color-blanco: #FFFFFF;
+        }
     #boton-nav{
             background-color: #DAB561;
             transition: transform 0.2s ease, background-color 0.2s ease;
@@ -12,7 +26,22 @@
             transform: scale(1.1);
             color: white;
         }
-</style>
+        .dropdown-item:active
+        {
+            background-color: var(--color-dorado) !important;
+            color: #000000 !important;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-dorado) 0%, var(--color-dorado-oscuro) 100%);
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 500;
+            transition: all 0.3s 
+        ease;
+            color: #333;
+        }
+        </style>
 
 <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid">

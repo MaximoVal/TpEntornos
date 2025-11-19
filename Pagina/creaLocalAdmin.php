@@ -23,6 +23,14 @@ $telefono = "+54 11 1234-5678";
     <!-- Íconos -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 </head>
+<style>
+    .list-group-item.active
+        {
+            background-color: #DAB561 !important;
+            border-color: #DAB561 !important;
+            color: #000000 !important;
+        }   
+</style>
 <body>
 
 <?php include 'navAdmin.php'; ?>
@@ -30,7 +38,7 @@ $telefono = "+54 11 1234-5678";
 <main class="container-fluid my-4">
         <div class="row">
             <!-- MENÚ LATERAL -->
-            <aside class="col-md-3 col-lg-2 mb-4">
+            <aside class="col-md-4 col-lg-3 mb-4">
                 <div class="card sidebar-links">
                 <div class="card-body d-flex flex-column justify-content-start">
                     <h3 class="card-title title">Panel administrador </h3>
@@ -45,7 +53,7 @@ $telefono = "+54 11 1234-5678";
             </aside>
 
             <!-- CONTENIDO PRINCIPAL -->
-            <section class="col-md-9 col-lg-10">
+            <section class="col-md-7 col-lg-8">
                 <div class="form-container">
                     <div class="form-header">
                         <h2>Registrar Local</h2>

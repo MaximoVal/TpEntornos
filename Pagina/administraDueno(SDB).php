@@ -23,6 +23,7 @@ $telefono = "+54 11 1234-5678";
     <!-- Íconos -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 </head>
+
 <body>
 
     <!-- HEADER -->

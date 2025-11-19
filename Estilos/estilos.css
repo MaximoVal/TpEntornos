@@ -135,7 +135,21 @@
             padding: 40px 0;
             text-align: center;
         }
-        /* Responsive */
+        
+
+        
+        
+
+
+
+
+
+
+
+
+
+
+        /* ------------------------------------Responsive---------------------------------- */
         @media (max-width: 768px) {
             .carousel-caption-custom h1 {
                 font-size: 2.5rem;
@@ -149,4 +163,5 @@
                 font-size: 2rem;
             }
         }
+        
         

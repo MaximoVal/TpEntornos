@@ -97,9 +97,9 @@
                 <!-- Card 4: Servicios adicionales -->
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
-                        <div class="card-img-placeholder">
+                        <div class="card-img-placeholder" style="background-image: url('../Footage/electrodomestico.jpg'); background-size: cover; background-position: center;" >
                             <p>ELECTRODOMESTICO</p>
-                            <img src="../Footage/electrodomestico.jpg" alt="Logo de McDonlads" class="imagenPromocion">
+                            
                         </div>
                         <div class="card-body card-body-custom">
                             <h5 class="card-title">Electrodomesticos</h5>

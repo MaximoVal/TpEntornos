@@ -1,4 +1,8 @@
 <style>
+  *
+  {
+    user-select:none;
+  }
     #boton-nav{
             background-color: #DAB561;
             transition: transform 0.2s ease, background-color 0.2s ease;
@@ -38,7 +42,7 @@
 <nav class="navbar navbar-expand-lg navbar-custom">
     <div class="container-fluid">
 
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="index.php">
                 <img src="../Footage/Logo.png" alt="Paseo de la Fortuna Logo"style="margin=0;border:none;">
             </a>
 
