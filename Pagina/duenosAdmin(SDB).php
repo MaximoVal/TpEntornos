@@ -30,13 +30,13 @@ $telefono = "+54 11 1234-5678";
             border-color: #DAB561 !important;
             color: #000000 !important;
         }   
+        
 </style>
-<body>
-
+<body >
     <!-- HEADER -->
     <?php include 'navAdmin.php'; ?>
     <!-- CONTENEDOR PRINCIPAL -->
-    <main class="container-fluid my-4">
+    <main class="container-fluid my-4 ">
         <div class="row">
             <!-- LADO IZQUIERDO - VÍNCULOS -->
             <aside class="col-md-4 col-lg-3 mb-4">

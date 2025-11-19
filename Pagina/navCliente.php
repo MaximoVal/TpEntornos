@@ -12,6 +12,36 @@
             transform: scale(1.1);
             color: white;
         }
+        *
+    {
+        user-select:none;
+    }
+    :root {
+            --color-dorado: #EED284;
+            --color-dorado-oscuro: #DAB561;
+            --color-negro: #333333;
+            --color-blanco: #FFFFFF;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-dorado) 0%, var(--color-dorado-oscuro) 100%);
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 500;
+            transition: all 0.3s 
+        ease;
+            color: #333;
+        }
+        body
+        {
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+        }
+        main
+        {
+            flex-grow:1;
+        }
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-custom">

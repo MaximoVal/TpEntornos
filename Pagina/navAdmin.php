@@ -41,6 +41,16 @@
         ease;
             color: #333;
         }
+        body
+        {
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+        }
+        main
+        {
+            flex-grow:1;
+        }
         </style>
 
 <nav class="navbar navbar-expand-lg navbar-custom">
