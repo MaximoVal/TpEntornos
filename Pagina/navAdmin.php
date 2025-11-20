@@ -6,7 +6,7 @@
 <style>
     *
     {
-        user-select:none;
+        /* user-select:none; */
     }
     :root {
             --color-dorado: #EED284;
@@ -51,6 +51,16 @@
         {
             flex-grow:1;
         }
+        .page-link{
+            color: var(--color-dorado-oscuro);
+        }
+        .active>.page-link, .page-link.active {
+            z-index: 3;
+            color: var(--bs-pagination-active-color);
+            background-color: var(--color-dorado);
+            border-color: var(--color-dorado);
+        }
+        
         </style>
 
 <nav class="navbar navbar-expand-lg navbar-custom">
@@ -59,7 +69,7 @@
                 <img src="../Footage/Logo.png" alt="Paseo de la Fortuna Logo"style="margin=0;border:none;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="background-color: #DAB561; border: none;">
-              <img src="menu.png" alt="Desplegar menu">  
+              <img src="../Footage/menu.png" alt="Desplegar menu">  
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">

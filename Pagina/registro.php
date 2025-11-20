@@ -1,7 +1,5 @@
 <?php
     session_start();
-    // NOTA: Asume que "funciones.php" contiene la definición de consultaSQL($sql)
-    // y que $conexion está disponible para mysqli_real_escape_string si se usa.
     include("funciones.php");
     $mensaje = "";
 
@@ -25,10 +23,8 @@
             // El usuario ya existe
             $mensaje = "El usuario ya está registrado. Por favor, inicie sesión.";
         } else {
-            // *** CORRECCIÓN CRÍTICA: Se cambió el operador de ASIGNACIÓN (=) por COMPARACIÓN (==) ***
-            // Esto asegura que la lógica se ejecute solo si $tipo es IGUAL a 'cliente'.
             if($tipo == 'cliente'){
-                // Lógica para Clientes (incluye campo categoriaCliente)
+
                 $sqlInsert = "INSERT INTO usuarios (nombre, apellido, nombreUsuario, contraseña, tipoUsuario, categoriaCliente) VALUES ('$nombre', '$apellido', '$email', '$password', '$tipo', 'Inicial')";
 
                 if(consultaSQL($sqlInsert)){
@@ -40,10 +36,17 @@
                     $mensaje = "Error al registrar usuario. Inténtelo de nuevo.";
                 }
             } else {
-                // Lógica para Dueño o Administrador (cubre el 'else')
-                // *** CORRECCIÓN: Se añadió 'tipoUsuario' en el INSERT para que la sentencia sea válida. ***
-                $sqlInsert = "INSERT INTO usuarios (nombre, apellido, nombreUsuario, contraseña, tipoUsuario) VALUES ('$nombre', '$apellido', '$email', '$password', '$tipo')";
 
+                if($tipo == 'dueño de local'){
+                    $localNoLocal = 'no';
+                    $pendienteAprobacion = 'si';
+                    $sqlInsert = "INSERT INTO usuarios (nombre, apellido, nombreUsuario, contraseña, tipoUsuario, localNoLocal, pendiente) VALUES ('$nombre', '$apellido', '$email', '$password', '$tipo', '$localNoLocal', '$pendienteAprobacion')";
+                }
+                else {
+                    $sqlInsert = "INSERT INTO usuarios (nombre, apellido, nombreUsuario, contraseña, tipoUsuario) VALUES ('$nombre', '$apellido', '$email', '$password', '$tipo')";
+                } 
+
+                
                 if(consultaSQL($sqlInsert)){
                     $_SESSION['usuario'] = $email;
                     $_SESSION['tipoUsuario'] = $tipo;
@@ -144,7 +147,8 @@
                         <label for="dueño">Dueño</label><br> 
                         
                         <input type="radio" id="administrador" name="tipoUsuario" value="administrador">
-                        <label for="administrador">Administrador</label><br> </div>
+                        <label for="administrador">Administrador</label><br>
+                    </div>
 
                     <button type="submit" class="btn btn-primary w-100 mb-3" name="enviar">
                         <i class="fas fa-sign-in-alt me-2"></i>

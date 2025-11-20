@@ -48,6 +48,7 @@ $telefono = "+54 11 1234-5678";
                         <a href="eliminaLocalAdmin.php" class="list-group-item list-group-item-action ">Eliminar local</a>
                         <a href="creaLocalAdmin.php" class="list-group-item list-group-item-action ">Crear local</a>
                         <a href="duenosAdmin(SDB).php" class="list-group-item list-group-item-action active" id="activo">Administrar dueños</a>
+                        <a href="crearNovedad.php" class="list-group-item list-group-item-action ">Crear novedad</a>
                     </div>
                 </div>
                 </div>
@@ -58,41 +59,10 @@ $telefono = "+54 11 1234-5678";
                 <div class="p-4 bg-white shadow rounded-3">
                     <h4 class="mb-4" style="color: var(--color-negro); font-weight:600;">Solicitudes de dueños</h4>
 
-                    <!-- Tarjeta 1 -->
-                    <div class="border rounded-3 p-3 mb-3 d-flex justify-content-between align-items-center">
-                        <div>
-                            <p class="mb-1 fw-bold" style="color: var(--color-negro);">Juan Pérez</p>
-                            <p class="mb-0" style="color: var(--color-gris);">Café Fortuna</p>
-                        </div>
-                        <div>
-                            <button class="btn btn-success btn-sm me-2">Aceptar</button>
-                            <button class="btn btn-danger btn-sm">Rechazar</button>
-                        </div>
-                    </div>
-
-                    <!-- Tarjeta 2 -->
-                    <div class="border rounded-3 p-3 mb-3 d-flex justify-content-between align-items-center">
-                        <div>
-                            <p class="mb-1 fw-bold" style="color: var(--color-negro);">María López</p>
-                            <p class="mb-0" style="color: var(--color-gris);">Panadería Dulce Aroma</p>
-                        </div>
-                        <div>
-                            <button class="btn btn-success btn-sm me-2">Aceptar</button>
-                            <button class="btn btn-danger btn-sm">Rechazar</button>
-                        </div>
-                    </div>
-
-                    <!-- Tarjeta 3 -->
-                    <div class="border rounded-3 p-3 mb-3 d-flex justify-content-between align-items-center">
-                        <div>
-                            <p class="mb-1 fw-bold" style="color: var(--color-negro);">Carlos Gómez</p>
-                            <p class="mb-0" style="color: var(--color-gris);">Restó La Esquina</p>
-                        </div>
-                        <div>
-                            <button class="btn btn-success btn-sm me-2">Aceptar</button>
-                            <button class="btn btn-danger btn-sm">Rechazar</button>
-                        </div>
-                    </div>
+                    <?php
+                    include "verificarDueño.php";
+                    
+                    ?>
                 </div>
             </section>
         </div>
