@@ -11,28 +11,20 @@
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../Estilos/estilos.css">
 </head>
 <body>
     
     <?php 
-
         if(!isset($_SESSION['usuario'])) {
             include 'navNoRegistrado.php';   
         } else if($_SESSION['tipoUsuario'] == 'cliente') {
-            
-                include 'navCliente.php';  
-            }
-            
-        else if($_SESSION['tipoUsuario'] == 'dueño de local') {
-            
-                include 'navDueño.php';  
-            }
-        else {
-                include 'navAdmin.php';  
-            }
+            include 'navCliente.php';  
+        } else if($_SESSION['tipoUsuario'] == 'dueño de local') {
+            include 'navDueño.php';  
+        } else {
+            include 'navAdmin.php';  
+        }
     ?>
 
     <!-- Carousel mejorado -->
@@ -67,7 +59,6 @@
                     </div>
                 </div>
 
-
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
                         <div class="card-img-placeholder" style="background-image: url('../Footage/PatioComida.png'); background-size: cover; background-position: center;">
@@ -80,7 +71,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
@@ -95,7 +85,6 @@
                     </div>
                 </div>
 
-
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
                         <div class="card-img-placeholder" style="background-image: url('../Footage/Tecnologia.png'); background-size: cover; background-position: center;">
@@ -109,7 +98,6 @@
                     </div>
                 </div>
 
-
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
                         <div class="card-img-placeholder" style="background-image: url('../Footage/ArtDeporte.jpg'); background-size: cover; background-position: center;">
@@ -122,7 +110,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
@@ -139,66 +126,165 @@
             </div>
         </div>
     </section>
-<div id="carouselNovedades" class="carousel slide mb-4" data-bs-ride="carousel">
-  <!-- Indicadores -->
-  <div class="carousel-indicators">
-    <button type="button" data-bs-target="#carouselNovedades" data-bs-slide-to="0" class="active"></button>
-    <button type="button" data-bs-target="#carouselNovedades" data-bs-slide-to="1"></button>
-    <button type="button" data-bs-target="#carouselNovedades" data-bs-slide-to="2"></button>
-    <button type="button" data-bs-target="#carouselNovedades" data-bs-slide-to="3"></button>
-  </div>
 
-  <!-- Slides -->
-  <div class="carousel-inner rounded-3 shadow-sm">
-    <!-- Novedad 1 -->
-    <div class="carousel-item active">
-      <img src="https://picsum.photos/1200/400?random=1" class="d-block w-100" alt="Nueva apertura de tienda">
-      <div class="carousel-caption bg-dark bg-opacity-50 rounded p-3">
-        <h5>Apertura de Zara Home</h5>
-        <p>¡Descubrí la nueva tienda de decoración en el segundo nivel del shopping!</p>
-      </div>
+    <!-- Carousel de Novedades -->
+    <div class="container my-5">
+        <h2 class="section-title text-center mb-4">Novedades del Shopping</h2>
+        
+        <?php
+            include "funciones.php";
+            
+            // Determinar qué novedades puede ver el usuario según su categoría
+            $categoriaUsuario = '';
+            $tipoUsuario = '';
+            
+            if (isset($_SESSION['usuario'])) {
+                $tipoUsuario = $_SESSION['tipoUsuario'];
+                
+                // Si es cliente, obtener su categoría
+                if ($tipoUsuario == 'cliente') {
+                    $usuarioActual = $_SESSION['usuario'];
+                    $consultaCategoria = "SELECT tipoUsuario FROM usuarios WHERE nombreUsuario = '$usuarioActual'";
+                    $resultadoCategoria = consultaSQL($consultaCategoria);
+                    
+                    if ($rowCategoria = mysqli_fetch_assoc($resultadoCategoria)) {
+                        $categoriaUsuario = $rowCategoria['tipoUsuario'];
+                    }
+                }
+            }
+            
+            // Construir la consulta según el tipo de usuario
+            if ($tipoUsuario == 'dueño de local' || $tipoUsuario == 'administrador') {
+                // Dueños y administradores ven todas las novedades
+                $consulta = "SELECT * FROM novedades ORDER BY fechaDesdeNovedad DESC";
+            } else if ($tipoUsuario == 'cliente') {
+                // Clientes ven según su categoría
+                switch ($categoriaUsuario) {
+                    case 'Premium':
+                        // Premium ve: Premium, Medium e Inicial
+                        $consulta = "SELECT * FROM novedades 
+                                    WHERE tipoCliente IN ('Premium', 'Medium', 'Inicial') 
+                                    ORDER BY fechaDesdeNovedad DESC";
+                        break;
+                    case 'Medium':
+                        // Medium ve: Medium e Inicial
+                        $consulta = "SELECT * FROM novedades 
+                                    WHERE tipoCliente IN ('Medium', 'Inicial') 
+                                    ORDER BY fechaDesdeNovedad DESC";
+                        break;
+                    case 'Inicial':
+                    default:
+                        // Inicial solo ve: Inicial
+                        $consulta = "SELECT * FROM novedades 
+                                    WHERE tipoCliente = 'Inicial' 
+                                    ORDER BY fechaDesdeNovedad DESC";
+                        break;
+                }
+            } else {
+                // Usuarios no registrados solo ven novedades Inicial
+                $consulta = "SELECT * FROM novedades 
+                            WHERE tipoCliente = 'Inicial' 
+                            ORDER BY fechaDesdeNovedad DESC";
+            }
+            
+            $resultado = consultaSQL($consulta);
+            
+            // Contar el número de novedades
+            $novedades = [];
+            while ($row = mysqli_fetch_assoc($resultado)) {
+                $novedades[] = $row;
+            }
+            $totalNovedades = count($novedades);
+        ?>
+        
+        <?php if ($totalNovedades > 0): ?>
+        <div id="carouselNovedades" class="carousel slide" data-bs-ride="carousel">
+            <!-- Indicadores dinámicos -->
+            <div class="carousel-indicators">
+                <?php for ($i = 0; $i < $totalNovedades; $i++): ?>
+                    <button type="button" 
+                            data-bs-target="#carouselNovedades" 
+                            data-bs-slide-to="<?php echo $i; ?>" 
+                            <?php echo $i === 0 ? 'class="active"' : ''; ?>
+                            aria-label="Slide <?php echo $i + 1; ?>">
+                    </button>
+                <?php endfor; ?>
+            </div>
+
+            <!-- Slides -->
+            <div class="carousel-inner rounded-3 shadow-sm">
+                <?php 
+                $activeSet = false;
+                foreach ($novedades as $row):
+                    $activeClass = '';
+                    if (!$activeSet) {
+                        $activeClass = 'active';
+                        $activeSet = true;
+                    }
+                    
+                    // Definir la ruta de la imagen según la categoría o imagen subida
+                    if (!empty($row['imagen'])) {
+                        // Si tiene imagen subida, usar esa
+                        $rutaImagen = "../imagenes/novedades/" . $row['imagen'];
+                    } else {
+                        // Si no tiene imagen, usar imagen predeterminada según categoría
+                        $categoriaLower = strtolower($row['categoria']);
+                        
+                        if ($categoriaLower == 'gastronomia') {
+                            $rutaImagen = '../Footage/PatioComida2.png';
+                        } else if ($categoriaLower == 'entretenimiento') {
+                            $rutaImagen = '../Footage/Entretenimiento.jpg';
+                        } else if ($categoriaLower == 'deporte') {
+                            $rutaImagen = '../Footage/Deportes.jpg';
+                        } else if ($categoriaLower == 'tecnologia') {
+                            $rutaImagen = '../Footage/Tecnologia.jpg';
+                        } else if ($categoriaLower == 'indumentaria') {
+                            $rutaImagen = '../Footage/Indumentaria.jpg';
+                        } else if ($categoriaLower == 'infraestructura') {
+                            $rutaImagen = '../Footage/Infraestructura.jpg';
+                        } else {
+                            $rutaImagen = '../Footage/Paseo 2.jpeg';
+                        }
+                    }
+                ?>
+                    <!-- Novedad: <?php echo ($row['nombre']); ?> -->
+                    <div class="carousel-item <?php echo $activeClass; ?>">
+                        <img src="<?php echo $rutaImagen; ?>" 
+                             class="d-block w-100" 
+                             alt="<?php echo ($row['nombre']); ?>"
+                             style="max-height: 500px; object-fit: cover;">
+                        <div class="carousel-caption bg-dark bg-opacity-50 rounded p-3">
+                            <h5><?php echo ($row['nombre']); ?></h5>
+                            <p><?php echo ($row['descripciónNovedad']); ?></p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+            <!-- Controles -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselNovedades" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselNovedades" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Siguiente</span>
+            </button>
+        </div>
+        <?php else: ?>
+            <div class="alert alert-info text-center">
+                <i class="bi bi-info-circle"></i> No hay novedades disponibles para tu categoría en este momento.
+            </div>
+        <?php endif; ?>
+        
+        
     </div>
-
-    <!-- Novedad 2 -->
-    <div class="carousel-item">
-      <img src="https://picsum.photos/1200/400?random=2" class="d-block w-100" alt="Nuevo patio de comidas">
-      <div class="carousel-caption bg-dark bg-opacity-50 rounded p-3">
-        <h5>Nuevo Patio de Comidas</h5>
-        <p>Más opciones gourmet, incluyendo cocina internacional y cafeterías renovadas.</p>
-      </div>
-    </div>
-
-    <!-- Novedad 3 -->
-    <div class="carousel-item">
-      <img src="https://picsum.photos/1200/400?random=3" class="d-block w-100" alt="Evento de moda">
-      <div class="carousel-caption bg-dark bg-opacity-50 rounded p-3">
-        <h5>Semana de la Moda</h5>
-        <p>Desfiles, descuentos y actividades especiales durante todo el fin de semana.</p>
-      </div>
-    </div>
-
-    <!-- Novedad 4 -->
-    <div class="carousel-item">
-      <img src="https://picsum.photos/1200/400?random=4" class="d-block w-100" alt="Promociones">
-      <div class="carousel-caption bg-dark bg-opacity-50 rounded p-3">
-        <h5>Promociones Especiales</h5>
-        <p>2x1 en cines, beneficios para socios y descuentos exclusivos en locales adheridos.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Controles -->
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselNovedades" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon"></span>
-    <span class="visually-hidden">Anterior</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselNovedades" data-bs-slide="next">
-    <span class="carousel-control-next-icon"></span>
-    <span class="visually-hidden">Siguiente</span>
-  </button>
-</div>
 
     <!-- Footer -->
     <?php include 'footer.php'; ?>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 </body>
 </html>

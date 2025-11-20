@@ -86,10 +86,15 @@
                                 <a class="dropdown-item" href="duenosAdmin(SDB).php">Administrar Dueños</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="eliminaLocalAdmin.php">Eliminar local</a>
-                            </li>
-                            <li>
                                 <a class="dropdown-item" href="creaLocalAdmin.php">Crear local</a>
+                            </li>
+                            
+                            <li>
+                                <a class="dropdown-item" href="crearNovedad.php">Crear novedad</a>
+                            </li>
+                            
+                            <li>
+                                <a class="dropdown-item" href="eliminaLocalAdmin.php">Eliminar local</a>
                             </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>

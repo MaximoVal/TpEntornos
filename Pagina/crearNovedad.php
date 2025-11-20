@@ -113,8 +113,17 @@ if(isset($_POST['enviar'])) {
 
                             <!-- Rubro -->
                             <div class="mb-3">
-                                <label class="form-label">Categoria</label>
-                                <input type="text" class="form-control" placeholder="Ej: Gastronomía" name="categoria" required>
+                                <label for="rubro-seleccion" class="form-label">Categoria de la novedead</label>    
+                                <select class="form-select" id="rubro-seleccion" name="categoria" required>
+                                    <option value="" disabled selected>Categorias Disponibles</option>
+                                    <option value="gastronomia">Gastronomía</option>
+                                    <option value="entretenimiento">Entretenimiento</option>
+                                    <option value="deporte">Deporte</option>
+                                    <option value="tecnologia">Tecnología</option>
+                                    <option value="indumentaria">Indumentaria</option>
+                                    <option value="infraestructura">Infraestructura</option>
+                                    <option value="otros">Otros</option>
+                                </select>
                             </div>
 
                             <!-- ID dueño -->
