@@ -66,11 +66,11 @@ if(isset($_POST['realizarActualizacionLocal'])){
           <div class="card-body d-flex flex-column justify-content-start">
             <h3 class="card-title title">Panel administrador </h3>
              <div class="list-group">
-                <a href="administraLocalAdmin.php" class="list-group-item list-group-item-action active">Administrar locales</a>
-                <a href="eliminaLocalAdmin.php" class="list-group-item list-group-item-action">Eliminar local</a>
-                <a href="creaLocalAdmin.php" class="list-group-item list-group-item-action">Crear local</a>
                 <a href="duenosAdmin(SDB).php" class="list-group-item list-group-item-action ">Administrar dueños</a>
+                <a href="administraLocalAdmin.php" class="list-group-item list-group-item-action active">Administrar locales</a>
+                <a href="creaLocalAdmin.php" class="list-group-item list-group-item-action ">Crear local</a>
                 <a href="crearNovedad.php" class="list-group-item list-group-item-action ">Crear novedad</a>
+                <a href="eliminaLocalAdmin.php" class="list-group-item list-group-item-action">Eliminar local</a>   
             </div>
           </div>
         </div>
