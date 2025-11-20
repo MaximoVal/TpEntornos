@@ -50,6 +50,23 @@ if(isset($_POST['enviar'])){
     <link rel="stylesheet" href="../Estilos/loginEstilo.css">
 
 </head>
+<style>
+    *
+    {
+        user-select:none;
+    }
+    .btn-primary {
+    background: linear-gradient(135deg, var(--color-dorado) 0%, var(--color-dorado-oscuro) 100%);
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-weight: 500;
+    transition: all 0.3s 
+ease;
+    color: #333;
+}
+
+</style>
 <body>
     <!-- Navbar fijo en la parte superior -->
     <nav class="navbar navbar-expand-lg navbar-custom">

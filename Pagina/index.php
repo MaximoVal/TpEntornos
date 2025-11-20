@@ -27,6 +27,7 @@
             }
             
         else if($_SESSION['tipoUsuario'] == 'dueño de local') {
+            
                 include 'navDueño.php';  
             }
         else {
@@ -52,88 +53,86 @@
         <div class="container">
             <h2 class="section-title">Promociones</h2>
             <div class="row">
-                <!-- Card 1: Tiendas -->
+                <!--Tarjetas de Categorias-->
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
                         <div class="card-img-placeholder imagenesPromoc" style="background-image: url('../Footage/Indumentaria.png'); background-size: cover; background-position: center;">
-                          INDUMENTARIA
+                          <p style="color: white; -webkit-text-stroke: 0.5px black; font-size: 1.4rem;">INDUMENTARIA</p>
                         </div>
                         <div class="card-body card-body-custom">
                             <h5 class="card-title">Indumentaria</h5>
                             <p class="card-text">Descubre las últimas tendencias en moda, accesorios y mucho más en nuestras exclusivas tiendas de marcas reconocidas.</p>
-                            <a href="#tiendas" class="btn btn-custom">Explorar Tiendas</a>
+                            <a href="descuentoTabla(SDB).php?categoria=Indumentaria" class="btn btn-custom">Explorar Promociones</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card 2: Restaurantes -->
+
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
                         <div class="card-img-placeholder" style="background-image: url('../Footage/PatioComida.png'); background-size: cover; background-position: center;">
-                          GASTRONOMIA
+                          <p style="color: white; -webkit-text-stroke: 0.5px black; font-size: 1.4rem;">GASTRONOMIA</p>
                         </div>
                         <div class="card-body card-body-custom">
                             <h5 class="card-title">Área Gastronómica</h5>
                             <p class="card-text">Disfruta de una amplia variedad de restaurantes con los mejores sabores locales e internacionales para toda la familia.</p>
-                            <a href="#restaurantes" class="btn btn-custom">Ver Restaurantes</a>
+                            <a href="descuentoTabla(SDB).php?categoria=Gastronomia" class="btn btn-custom">Explorar Promociones</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card 3: Entretenimiento -->
+
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
-                        <div class="card-img-placeholder">
-                            🎬 ENTRETENIMIENTO
+                        <div class="card-img-placeholder" style="background-image: url('../Footage/Cine.jpg'); background-size: cover; background-position: center;">
+                            <p style="color: white; -webkit-text-stroke: 0.5px black; font-size: 1.4rem;">🎬 ENTRETENIMIENTO </p>
                         </div>
                         <div class="card-body card-body-custom">
                             <h5 class="card-title">Entretenimiento</h5>
                             <p class="card-text">Vive experiencias únicas en nuestro cine, zona de juegos y espacios de entretenimiento para todas las edades.</p>
-                            <a href="#entretenimiento" class="btn btn-custom">Descubrir Más</a>
+                            <a href="descuentoTabla(SDB).php?categoria=Entretenimiento" class="btn btn-custom">Explorar Promociones</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card 4: Servicios adicionales -->
+
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
-                        <div class="card-img-placeholder">
-                            <p>ELECTRODOMESTICO</p>
-                            <img src="../Footage/electrodomestico.jpg" alt="Logo de McDonlads" class="imagenPromocion">
+                        <div class="card-img-placeholder" style="background-image: url('../Footage/Tecnologia.png'); background-size: cover; background-position: center;">
+                            <p style="color: white; -webkit-text-stroke: 0.5px black; font-size: 1.4rem;">TECNOLOGIA</p>
                         </div>
                         <div class="card-body card-body-custom">
-                            <h5 class="card-title">Electrodomesticos</h5>
-                            <p class="card-text">Cajeros automáticos, estacionamiento gratuito, wifi gratis y muchos servicios más para tu comodidad.</p>
-                            <a href="#servicios" class="btn btn-custom">Ver Servicios</a>
+                            <h5 class="card-title">Tecnologia</h5>
+                            <p class="card-text">Notebooks, smartphones y todo lo ultimo en tecnologia que te podes imaginar!</p>
+                            <a href="descuentoTabla(SDB).php?categoria=Tecnologia" class="btn btn-custom">Explorar Promociones</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card 5: Eventos -->
+
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
-                        <div class="card-img-placeholder">
-                            <p>ELECTRODOMESTICO</p>
-                            <img src="../Footage/electrodomestico.jpg" alt="Logo de McDonlads" class="imagenPromocion">
+                        <div class="card-img-placeholder" style="background-image: url('../Footage/ArtDeporte.jpg'); background-size: cover; background-position: center;">
+                            <p style="color: white; -webkit-text-stroke: 0.5px black; font-size: 1.6rem;">DEPORTE</p>
                         </div>
                         <div class="card-body card-body-custom">
-                            <h5 class="card-title">Electrodomesticos</h5>
-                            <p class="card-text">Cajeros automáticos, estacionamiento gratuito, wifi gratis y muchos servicios más para tu comodidad.</p>
-                            <a href="#servicios" class="btn btn-custom">Ver Servicios</a>
+                            <h5 class="card-title">Deporte</h5>
+                            <p class="card-text">Veni y adquiri todo lo ultimo de tu deporte favorito!!</p>
+                            <a href="descuentoTabla(SDB).php?categoria=Deporte" class="btn btn-custom">Explorar Promociones</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Card 6: Horarios -->
+
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
                         <div class="card-img-placeholder">
-                            🎉 SERVICIOS
+                            🎉 OTROS
                         </div>
                         <div class="card-body card-body-custom">
-                            <h5 class="card-title">Servicios adicionaless</h5>
-                            <p class="card-text">No te pierdas nuestros eventos especiales, promociones y actividades durante todo el año.</p>
-                            <a href="#eventos" class="btn btn-custom">Ver Eventos</a>
+                            <h5 class="card-title">Otros</h5>
+                            <p class="card-text">💄 Salud, Belleza y Cuidado Persona; 💎 Hogar y Decoración; 💼 Servicios...</p>
+                            <a href="descuentoTabla(SDB).php?categoria=Otros" class="btn btn-custom">Explorar Promociones</a>
                         </div>
                     </div>
                 </div>
