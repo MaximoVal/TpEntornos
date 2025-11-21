@@ -1,13 +1,130 @@
 <?php
     session_set_cookie_params(0);
-    session_start(); 
+    session_start();
+    $hoy= date('Y-m-d');
 ?>
+<?php
+include('funciones.php');
+if(isset($_SESSION['usuario'])){
+    $emailUsu=$_SESSION['usuario'];
+    $sqlCategoriaCliente="SELECT * FROM usuarios WHERE nombreUsuario='$emailUsu'";
+    $resultadoCategoria=consultaSQL($sqlCategoriaCliente);
+    $rc=mysqli_fetch_assoc($resultadoCategoria);
+    $resultadoCat=$rc['categoriaCliente'];
+    $codCliente=$rc['codUsuario'];
+} #cambios abajo
+if(isset($_GET['categoria'])){
+
+    $porPagina = 5;
+    $pagina = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+    if ($pagina < 1) $pagina = 1;
+
+    $offset = ($pagina - 1) * $porPagina;
+
+    $categoria= $_GET['categoria'];
+
+    // --- INICIAL ---
+    if($resultadoCat=='Inicial'){
+
+        $sqlCount = "SELECT COUNT(*) AS total 
+                     FROM promociones 
+                     WHERE estadoPromo='aprobada' 
+                       AND categoriaPromo='$categoria'
+                       AND categoriaCliente='Inicial'
+                       AND fechaDesdePromo > '$hoy'";
+
+        $resultCount = consultaSQL($sqlCount);
+        $total = mysqli_fetch_assoc($resultCount)['total'];
+
+        $totalPaginas = ceil($total / $porPagina);
+
+        $sqlPromosCategoricas= "SELECT * 
+                                FROM promociones 
+                                WHERE estadoPromo='aprobada' 
+                                  AND categoriaPromo='$categoria' 
+                                  AND categoriaCliente='Inicial'
+                                  AND fechaDesdePromo > '$hoy'
+                                LIMIT $porPagina OFFSET $offset";
+
+    // --- MEDIUM ---
+    } elseif($resultadoCat=='Medium') {
+
+        $sqlCount = "SELECT COUNT(*) AS total 
+                     FROM promociones 
+                     WHERE estadoPromo='aprobada' 
+                       AND categoriaPromo='$categoria'
+                       AND (categoriaCliente='Inicial' OR categoriaCliente='Medium')
+                       AND fechaDesdePromo > '$hoy'";
+
+        $resultCount = consultaSQL($sqlCount);
+        $total = mysqli_fetch_assoc($resultCount)['total'];
+
+        $totalPaginas = ceil($total / $porPagina);
+
+        $sqlPromosCategoricas= "SELECT * 
+                                FROM promociones 
+                                WHERE estadoPromo='aprobada' 
+                                  AND categoriaPromo='$categoria' 
+                                  AND (categoriaCliente='Inicial' OR categoriaCliente='Medium')
+                                  AND fechaDesdePromo > '$hoy'
+                                LIMIT $porPagina OFFSET $offset";
+
+    // --- PREMIUM / OTROS ---
+    } else {
+
+        $sqlCount = "SELECT COUNT(*) AS total 
+                     FROM promociones 
+                     WHERE estadoPromo='aprobada' 
+                       AND categoriaPromo='$categoria'
+                       AND fechaDesdePromo > '$hoy'";
+
+        $resultCount = consultaSQL($sqlCount);
+        $total = mysqli_fetch_assoc($resultCount)['total'];
+
+        $totalPaginas = ceil($total / $porPagina);
+
+        $sqlPromosCategoricas= "SELECT * 
+                                FROM promociones 
+                                WHERE estadoPromo='aprobada' 
+                                  AND categoriaPromo='$categoria'
+                                  AND fechaDesdePromo > '$hoy'
+                                LIMIT $porPagina OFFSET $offset";
+    }
+
+    $resultPromosTotales=consultaSQL($sqlPromosCategoricas);
+}
+#fin
+function obtenNombreLocal($codLocal){
+    $sqlObtenLocal="SELECT nombreLocal FROM locales WHERE codLocal='$codLocal'";
+    $result= consultaSQL($sqlObtenLocal);
+    $nombre = mysqli_fetch_assoc($result);
+    return $nombre['nombreLocal'];
+}
+function verificaPromoSoli($promoCod, $cliente){
+    $sqlVerificacion="SELECT * FROM uso_promociones WHERE codPromo='$promoCod' and codCliente='$cliente'";
+    $resultadoVerificacion= consultaSQL($sqlVerificacion);
+    return mysqli_num_rows($resultadoVerificacion);
+}
+if(isset($_POST['solicitarPromo'])){
+    $codPromo= $_POST['codPromo'];
+    $estadoInicial="enviada";
+    if(verificaPromoSoli($codPromo, $codCliente)==0){    
+        $sqlSolicitaPromo="INSERT INTO uso_promociones (codCliente, codPromo, fechaUsoPromo, estado) VALUES ('$codCliente', '$codPromo', '$hoy', '$estadoInicial')";
+        consultaSQL($sqlSolicitaPromo);
+        $_SESSION['solicitud_ok'] = "La promocion se solicito correctamente.";
+    }else{
+        $_SESSION['solicitudHecha_ok'] = "La promocion ya fue solicitada anteriormente por usted.";
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel del Dueño</title>
+    <title>Tabla de Descuentos.</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -21,7 +138,7 @@
 </head>
 <body>
 
-  <?php 
+    <?php 
 
         if(!isset($_SESSION['usuario'])) {
             include 'navNoRegistrado.php';   
@@ -31,7 +148,6 @@
             }
             
         else if($_SESSION['tipoUsuario'] == 'dueño de local') {
-            
                 include 'navDueño.php';  
             }
         else {
@@ -45,21 +161,47 @@
     <!-- PANEL LATERAL DE CATEGORÍAS -->
     <aside class="col-md-3 col-lg-2 mb-4">
       <div class="p-3 bg-white shadow rounded-3">
-        <h6 class="mb-3 text-center" style="color: var(--color-negro); font-weight:600;">Categorías</h6>
+        <h3 class="mb-3 text-center" style="color: var(--color-negro); font-weight:600;">Categorías</h3>
         <ul class="list-unstyled">
-          <li><a href="#" class="text-decoration-none d-block py-2 text-center" style="color: var(--color-gris);">Gastronomía</a></li>
-          <li><a href="#" class="text-decoration-none d-block py-2 text-center" style="color: var(--color-gris);">Entretenimiento</a></li>
-          <li><a href="#" class="text-decoration-none d-block py-2 text-center fw-bold" style="color: var(--color-dorado-oscuro); text-decoration: underline;">Deporte (en uso)</a></li>
-          <li><a href="#" class="text-decoration-none d-block py-2 text-center" style="color: var(--color-gris);">Moda</a></li>
-          <li><a href="#" class="text-decoration-none d-block py-2 text-center" style="color: var(--color-gris);">Tecnología</a></li>
+          <li>
+              <a href="descuentoTabla(SDB).php?categoria=Deporte" class="text-decoration-none d-block py-2 text-center fw-bold" style="<?php echo ($categoria == 'Deporte')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">
+                  Deporte
+              </a>
+          </li>          
+          <li>
+              <a href="descuentoTabla(SDB).php?categoria=Entretenimiento" class="text-decoration-none d-block py-2 text-center fw-bold" style="<?php echo ($categoria == 'Entretenimiento')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">
+                  Entretenimiento
+              </a>
+          </li> 
+          
+          <li>
+              <a href="descuentoTabla(SDB).php?categoria=Gastronomia" class="text-decoration-none d-block py-2 text-center fw-bold" style="<?php echo ($categoria == 'Gastronomia')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">
+                  Gastronomia
+              </a>
+          </li> 
+          <li>
+              <a href="descuentoTabla(SDB).php?categoria=Indumentaria" class="text-decoration-none d-block py-2 text-center fw-bold" style="<?php echo ($categoria == 'Indumentaria')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">
+                  Indumentaria
+              </a>
+          </li> 
+          <li>
+              <a href="descuentoTabla(SDB).php?categoria=Tecnologia" class="text-decoration-none d-block py-2 text-center fw-bold" style="<?php echo ($categoria == 'Tecnologia')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">
+                  Tecnologia
+              </a>
+          </li>
+          <li>
+              <a href="descuentoTabla(SDB).php?categoria=Otros" class="text-decoration-none d-block py-2 text-center fw-bold" style="<?php echo ($categoria == 'Otros')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">
+                  Otros
+              </a>
+          </li> 
         </ul>
       </div>
     </aside>
 
     <!-- CONTENIDO PRINCIPAL -->
-    <section class="col-md-9 col-lg-10">
+    <section class="col-md-9 col-lg-10" method="POST">
       <div class="p-4 bg-white shadow rounded-3">
-        <h4 class="mb-4" style="color: var(--color-negro); font-weight:600;">Categoría en uso: <span style="color: var(--color-dorado-oscuro);">Deporte</span></h4>
+        <h4 class="mb-4" style="color: var(--color-negro); font-weight:600;">Categoría en uso: <span style="color: var(--color-dorado-oscuro);"><?php echo $categoria ?></span></h4>
 
         <!-- TABLA DE PROMOCIONES -->
     <div class="table-responsive">
@@ -69,48 +211,57 @@
             <th>Código</th>
             <th>Descripción</th>
             <th>Local</th>
-            <th>Fecha</th>
+            <th>Caducidad</th>
             <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
-        <!-- tus filas -->
-        <tr><td>PR-001</td><td>Descuento 20% en ropa deportiva</td><td>Sport Planet</td><td>02/11/2025</td>
-            <td><button class="btn btn-sm btn-success"><i class="bi bi-check"></i></button>
-                <button class="btn btn-sm btn-danger"><i class="bi bi-x"></i></button></td></tr>
-        <tr><td>PR-002</td><td>2x1 en entradas de cine</td><td>Cinema Plus</td><td>05/11/2025</td>
-            <td><button class="btn btn-sm btn-success"><i class="bi bi-check"></i></button>
-                <button class="btn btn-sm btn-danger"><i class="bi bi-x"></i></button></td></tr>
-        <tr><td>PR-003</td><td>Combo familiar en restaurante italiano</td><td>La Trattoria</td><td>06/11/2025</td>
-            <td><button class="btn btn-sm btn-success"><i class="bi bi-check"></i></button>
-                <button class="btn btn-sm btn-danger"><i class="bi bi-x"></i></button></td></tr>
-        <tr><td>PR-004</td><td>Descuento del 15% en zapatillas</td><td>FootLine</td><td>08/11/2025</td>
-            <td><button class="btn btn-sm btn-success"><i class="bi bi-check"></i></button>
-                <button class="btn btn-sm btn-danger"><i class="bi bi-x"></i></button></td></tr>
-        <tr><td>PR-005</td><td>Happy Hour 2x1 en tragos</td><td>Bar Central</td><td>09/11/2025</td>
-            <td><button class="btn btn-sm btn-success"><i class="bi bi-check"></i></button>
-                <button class="btn btn-sm btn-danger"><i class="bi bi-x"></i></button></td></tr>
-        <tr><td>PR-006</td><td>Descuento 10% en productos tecnológicos</td><td>TechZone</td><td>12/11/2025</td>
-            <td><button class="btn btn-sm btn-success"><i class="bi bi-check"></i></button>
-                <button class="btn btn-sm btn-danger"><i class="bi bi-x"></i></button></td></tr>
-        </tbody>
-    </table>
+        
+        <?php
+        if(mysqli_num_rows($resultPromosTotales) != 0){
+            while($promo = mysqli_fetch_assoc($resultPromosTotales)){
+        ?><form method="POST" action=""> 
+                <input type="hidden" name="codPromo" value="<?php echo $promo['codPromo']; ?>">
+                <tr><td>PR-<?php echo ($promo['codPromo']); ?></td>
+                <td><?php echo ($promo['textoPromo']); ?></td>
+                <td><?php echo (obtenNombreLocal($promo['codLocal'])); ?></td>
+                <td><?php echo ($promo['fechaHastaPromo']); ?></td>
+                <td><button class="btn btn-sm btn-success" name="solicitarPromo"><i class="bi bi-check"></i>Solicitar</button>
+                
+            </tr></form>
+        <?php
+            }
+        }else{ ?>
+            <p class="fw-bold" style="color: var(--color-gris);">
+                <i class="bi bi-search"></i>[NO SE ENCONTRARON PROMOCIONES DISPONIBLES PARA USTED EN ESTA CATEGORIA]
+            </p> <?php
+        }
+            ?>
+            </tbody>
+        </table>
     </div>
 
 <!-- PAGINACIÓN BOOTSTRAP -->
-<nav aria-label="Tabla de promociones" class="mt-3">
+<nav aria-label="Paginación" class="mt-3">
   <ul class="pagination justify-content-center">
-    <li class="page-item disabled">
-      <a class="page-link">Anterior</a>
+
+    <!-- Botón Anterior -->
+    <li class="page-item <?php echo ($pagina <= 1) ? 'disabled' : ''; ?>">
+      <a class="page-link" href="?pagina=<?php echo $pagina - 1; ?>&categoria=<?php echo $categoria; ?>">Anterior</a>
     </li>
-    <li class="page-item active">
-      <a class="page-link" href="#">1</a>
+
+    <!-- Números de página -->
+    <?php for($i = 1; $i <= $totalPaginas; $i++): ?>
+      <li class="page-item <?php echo ($i == $pagina) ? 'active' : ''; ?>">
+        <a class="page-link" href="?pagina=<?php echo $i; ?>&categoria=<?php echo $categoria; ?>"><?php echo $i; ?></a>
+      </li>
+    <?php endfor; ?>
+
+    <!-- Botón Siguiente -->
+    <li class="page-item <?php echo ($pagina >= $totalPaginas) ? 'disabled' : ''; ?>">
+      <a class="page-link" href="?pagina=<?php echo $pagina + 1; ?>&categoria=<?php echo $categoria; ?>">Siguiente</a>
     </li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#">Siguiente</a>
-    </li>
+
   </ul>
 </nav>
 
@@ -124,11 +275,36 @@
     </section>
   </div>
 </main>
-
+  <?php  if(isset($_SESSION['solicitud_ok'])) { ?>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Solicitud de promocion exitosa',
+        text: '<?php echo $_SESSION['solicitud_ok']; ?>',
+    });
+    </script>
+    <?php
+        unset($_SESSION['solicitud_ok']); // lo borro para no repetirlo
+    } 
+  ?>
+    <?php  if(isset($_SESSION['solicitudHecha_ok'])) { ?>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    Swal.fire({
+        icon: 'warning',
+        title: 'Solicitud de promocion ya realizada anteriormente',
+        text: '<?php echo $_SESSION['solicitudHecha_ok']; ?>',
+    });
+    </script>
+    <?php
+        unset($_SESSION['solicitudHecha_ok']); // lo borro para no repetirlo
+    } 
+  ?>
 
     <!-- Footer -->
     <?php include 'footer.php'; ?>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
 </body>
 </html>

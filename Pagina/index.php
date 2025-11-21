@@ -74,7 +74,7 @@
 
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
-                        <div class="card-img-placeholder" style="background-image: url('../Footage/Cine.jpg'); background-size: cover; background-position: center;">
+                        <div class="card-img-placeholder" style="background-image: url('https://images.pexels.com/photos/34766298/pexels-photo-34766298.jpeg'); background-size: cover; background-position: center;">
                             <p style="color: white; -webkit-text-stroke: 0.5px black; font-size: 1.4rem;">🎬 ENTRETENIMIENTO </p>
                         </div>
                         <div class="card-body card-body-custom">
@@ -100,7 +100,7 @@
 
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
-                        <div class="card-img-placeholder" style="background-image: url('../Footage/ArtDeporte.jpg'); background-size: cover; background-position: center;">
+                        <div class="card-img-placeholder" style="background-image: url('https://images.pexels.com/photos/1325724/pexels-photo-1325724.jpeg'); background-size: cover; background-position: center;">
                             <p style="color: white; -webkit-text-stroke: 0.5px black; font-size: 1.6rem;">DEPORTE</p>
                         </div>
                         <div class="card-body card-body-custom">
@@ -133,7 +133,7 @@
         
         <?php
             
-            
+            include_once("funciones.php"); // Conexión a la BD
             // Determinar qué novedades puede ver el usuario según su categoría
             $categoriaUsuario = '';
             $tipoUsuario = '';
@@ -285,7 +285,5 @@
     <?php include 'footer.php'; ?>
 
     <!-- Scripts de Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-</body>
+    
 </html>

@@ -69,7 +69,7 @@ if(isset($_GET['accion'])){
                 <div class="mt-4 p-3 bg-white shadow rounded-3">
                     <h5 class="mb-3" style="color:var(--color-negro); font-weight:600;">Panel de <strong>Administración</strong></h5>
                     <ul class="list-unstyled">
-                        <li><a href="administraDueno(SDB).php?accion=adminPromos" class="text-decoration-none d-block py-2" style="<?php echo ($accion == 'adminPromos')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">Adiministrar Promociones</a></li>
+                        <li><a href="administraDueno(SDB).php?accion=adminPromos" class="text-decoration-none d-block py-2" style="<?php echo ($accion == 'adminPromos')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">Administrar Promociones</a></li>
                         <li><a href="administraDueno(SDB).php?accion=gestionDatos" class="text-decoration-none d-block py-2" style="<?php echo ($accion == 'gestionDatos')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">Gestion de Datos Personales</a></li>
                         <li><a href="administraDueno(SDB).php?accion=verReportes" class="text-decoration-none d-block py-2" style="<?php echo ($accion == 'verReportes')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">Reportes</a></li>
                     </ul>
@@ -91,7 +91,7 @@ if(isset($_GET['accion'])){
                 <div class="mt-4 p-3 bg-white shadow rounded-3">
                     <h5 class="mb-3" style="color:var(--color-negro); font-weight:600;">Panel de <strong>Administración</strong></h5>
                     <ul class="list-unstyled">
-                        <li><a href="administraDueno(SDB).php?accion=adminPromos" class="text-decoration-none d-block py-2" style="color: var(--color-gris);">Adiministrar Promociones</a></li>
+                        <li><a href="administraDueno(SDB).php?accion=adminPromos" class="text-decoration-none d-block py-2" style="color: var(--color-gris);">Administrar Promociones</a></li>
                         <li><a href="administraDueno(SDB).php?accion=gestionDatos" class="text-decoration-none d-block py-2" style="color: var(--color-gris);">Gestion de Datos Personales</a></li>
                         <li><a href="administraDueno(SDB).php?accion=verReportes" class="text-decoration-none d-block py-2" style="color: var(--color-gris);">Reportes</a></li>
                     </ul>
@@ -106,7 +106,7 @@ if(isset($_GET['accion'])){
     <!-- Footer -->
     <?php include 'footer.php'; ?>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> -->
 
 </body>
 </html>

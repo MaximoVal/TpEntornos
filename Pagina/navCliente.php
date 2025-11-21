@@ -8,7 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../Estilos/estilos.css">
-    <link rel="stylesheet" href="../Estilos/usuarioCuentaEstilos.css">
+    <!-- <link rel="stylesheet" href="../Estilos/usuarioCuentaEstilos.css"> -->
 
     
 </head>
@@ -45,6 +45,10 @@
             transition: all 0.3s 
         ease;
             color: #333;
+        }
+        .btn-primary:hover
+        {
+            background: linear-gradient(135deg, var(--color-dorado) 0%, #ecd79cff 100%);
         }
         body
         {
