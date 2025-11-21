@@ -60,6 +60,15 @@
         {
             flex-grow:1;
         }
+        .page-link{
+            color: var(--color-dorado-oscuro);
+        }
+        .active>.page-link, .page-link.active {
+            z-index: 3;
+            color: var(--bs-pagination-active-color);
+            background-color: var(--color-dorado);
+            border-color: var(--color-dorado);
+        }
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-custom">

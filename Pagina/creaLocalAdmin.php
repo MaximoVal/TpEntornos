@@ -59,6 +59,7 @@ if(isset($_POST['crear-local'])){
                     <div class="list-group">
                         <a href="duenosAdmin(SDB).php" class="list-group-item list-group-item-action ">Administrar dueños</a>
                         <a href="administraLocalAdmin.php" class="list-group-item list-group-item-action ">Administrar locales</a>
+                        <a href="administrarPromocionesAdmin.php" class="list-group-item list-group-item-action ">Administrar promociones</a>
                         <a href="creaLocalAdmin.php" class="list-group-item list-group-item-action active">Crear local</a>
                         <a href="crearNovedad.php" class="list-group-item list-group-item-action ">Crear novedad</a>
                         <a href="eliminaLocalAdmin.php" class="list-group-item list-group-item-action">Eliminar local</a>   
