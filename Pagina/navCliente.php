@@ -1,4 +1,6 @@
-
+<?php
+include 'funciones.php';
+?>
 <style>
     #boton-nav{
             background-color: #DAB561;

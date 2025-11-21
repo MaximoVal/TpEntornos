@@ -132,7 +132,7 @@
         <h2 class="section-title text-center mb-4">Novedades del Shopping</h2>
         
         <?php
-            include "funciones.php";
+            
             
             // Determinar qué novedades puede ver el usuario según su categoría
             $categoriaUsuario = '';
@@ -152,6 +152,7 @@
                     }
                 }
             }
+            
             
             // Construir la consulta según el tipo de usuario
             if ($tipoUsuario == 'dueño de local' || $tipoUsuario == 'administrador') {
@@ -183,7 +184,7 @@
             } else {
                 // Usuarios no registrados solo ven novedades Inicial
                 $consulta = "SELECT * FROM novedades 
-                            WHERE tipoCliente = 'Inicial' 
+                            WHERE tipoCliente = 'No' 
                             ORDER BY fechaDesdeNovedad DESC";
             }
             

@@ -85,7 +85,7 @@ if(mysqli_num_rows($res) > 0){
                                     <a class="dropdown-item" href="cuentaDueño.php">Ver descuentos</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="cuentaDueño.php">Administrar locales</a>
+                                    <a class="dropdown-item" href="administraDueno(SDB).php">Panel de Administración</a>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
