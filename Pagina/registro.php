@@ -12,7 +12,6 @@
         
         // Obtiene el valor del radio button seleccionado
         $tipo = $_POST['tipoUsuario'];
-        echo "Tipo de usuario seleccionado: " . $tipo; // Línea de depuración
         
 
         // Verificar si el usuario ya existe

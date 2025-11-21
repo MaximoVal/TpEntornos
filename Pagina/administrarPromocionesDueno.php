@@ -2,6 +2,10 @@
 
 $hoy= date('Y-m-d');
 $tresSemanas = date('Y-m-d', strtotime('+21 days'));
+if($localDueno!=[]){
+    $codLocal=$localDueno['codLocal'];
+    $sqlPromosDeLocal="SELECT codPromo, textoPromo, fechaHastaPromo, categoriaPromo FROM promociones WHERE codLocal='$codLocal'";
+    $resultadoPromos=consultaSQL($sqlPromosDeLocal);}
 if(isset($_POST['crearPromo'])){
     $diasSemana= implode(",", $_POST['dias']);
     $estado= 'pendiente';
@@ -23,7 +27,6 @@ if(isset($_POST['eliminaPromo'])){
     $_SESSION['baja_ok'] = "La promo fue eliminada correctamente.";
 }
 ?>
-
 <div class="form-container mb-4">
     <div class="form-header">
         <h2>Crear Promoción</h2>
@@ -58,7 +61,8 @@ if(isset($_POST['eliminaPromo'])){
                 <div style="position: relative; cursor: pointer;" onclick="document.getElementById('fechaFin').showPicker()">
                     <input type="date" id="fechaFin" name="fechaFin" class="form-control" style="cursor: pointer; width: 100%;" min="<?php echo $hoy; ?>" max="<?php echo $tresSemanas; ?>" required>
                 </div>
-            </div>  
+            </div>
+            
             <div class="mb-3">
                 <label class="form-label">Días disponibles</label>
 
@@ -112,7 +116,7 @@ if(isset($_POST['eliminaPromo'])){
 </div>
 
 <!-- Formulario eliminación promoción -->
-<div class="form-container">
+<div class="form-container">    
     <div class="form-header">
         <h2>Eliminar Promoción</h2>
     </div>
@@ -123,16 +127,21 @@ if(isset($_POST['eliminaPromo'])){
                 <select class="form-select" name="promoEliminada">
                     <option value="" disabled selected>Promociones Activas.</option>
                         <?php
+                        if($localDueno!=[]){
                         while($promo = mysqli_fetch_assoc($resultadoPromos)){
                             ?><option value="<?php echo $promo['codPromo'];?>">Id: <?php echo $promo['codPromo'];?>,       Titulo: <?php echo $promo['textoPromo'];?>,       Caducidad: <?php echo $promo['fechaHastaPromo'];?>,       Categoria: <?php echo $promo['categoriaPromo'];?></option>
-                        <?php } ?>
+                        <?php } 
+                        }else{ ?> 
+                        <option value="">No se tienen promociones vigentes.</option>
+                        <?php }
+                            ?>
                 </select>
             <button type="submit" class="btn-enviar mt-3" name="eliminaPromo">Eliminar</button>
             </div>
         </form>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <?php  if(isset($_SESSION['carga_ok'])) { ?>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
@@ -159,4 +168,3 @@ if(isset($_POST['eliminaPromo'])){
         unset($_SESSION['baja_ok']); 
     } 
   ?>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

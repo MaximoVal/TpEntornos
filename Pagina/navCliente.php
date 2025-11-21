@@ -1,6 +1,18 @@
 <?php
-include 'funciones.php';
+// include 'funciones.php';
 ?>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración de Cuenta</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../Estilos/estilos.css">
+    <link rel="stylesheet" href="../Estilos/usuarioCuentaEstilos.css">
+
+    
+</head>
+
 <style>
     #boton-nav{
             background-color: #DAB561;
@@ -61,7 +73,7 @@ include 'funciones.php';
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarCuenta" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user-circle me-1"></i>
+                            
                             Cuenta
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarCuenta">
@@ -85,3 +97,4 @@ include 'funciones.php';
             </div>
         </div>
     </nav>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -12,15 +12,13 @@ if($dueno['localNoLocal']!='no'){
     $sqlBuscaLocalDueno="SELECT * FROM locales WHERE codDueno='$codDueno'";
     $dataLocalDueno=consultaSQL($sqlBuscaLocalDueno);
     $localDueno=mysqli_fetch_assoc($dataLocalDueno);
-    $codLocal=$localDueno['codLocal'];
-    $sqlPromosDeLocal="SELECT codPromo, textoPromo, fechaHastaPromo, categoriaPromo FROM promociones WHERE codLocal='$codLocal'";
-    $resultadoPromos=consultaSQL($sqlPromosDeLocal);
 
 }else{
-
+    $localDueno=[];
 }
 if(isset($_GET['accion'])){
     $accion=$_GET['accion'];
+    
 }
 ?>
 
@@ -41,8 +39,7 @@ if(isset($_GET['accion'])){
 
     <!-- HEADER -->
 
-    <?php include('navDueño.php'); ?>
-
+        <?php include('navDueño.php'); ?>
 
     <!-- CONTENEDOR PRINCIPAL -->
     <main class="container-fluid my-4">
@@ -100,6 +97,8 @@ if(isset($_GET['accion'])){
                     </ul>
                 </div> <?php
                 } ?>
+                
+                
             </section>
         </div>
     </main>

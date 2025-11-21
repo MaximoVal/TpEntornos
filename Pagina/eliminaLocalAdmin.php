@@ -124,7 +124,7 @@ if(isset($_POST['elimina-local'])){
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
     Swal.fire({
-        icon: 'warning',
+        icon: 'success',
         title: 'Eliminacion de local exitoso',
         text: '<?php echo $_SESSION['elimina_ok']; ?>',
     });
@@ -137,6 +137,5 @@ if(isset($_POST['elimina-local'])){
     <!-- Footer -->
     <?php include 'footer.php'; ?>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
