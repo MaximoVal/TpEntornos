@@ -51,8 +51,11 @@
                             echo '<li class="mb-2"><a href="cuentaDueño.php" class="text-white text-decoration-none">👤 Mi Cuenta</a></li>';
                         }
                         else{
-                            echo '<li class="mb-2"><a href="administraDueno(SDB).php" class="text-white text-decoration-none">👤 Panel de Administración</a></li>';
+                            echo '<li class="mb-2"><a href="duenosAdmin(SDB).php" class="text-white text-decoration-none">👤 Panel de Administración</a></li>';
                         }
+                    }
+                    else {
+                        echo '<li class="mb-2"><a href="login.php" class="text-white text-decoration-none">🔐 Iniciar Sesión</a></li>';
                     }
                     
                     ?>
