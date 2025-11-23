@@ -68,6 +68,7 @@ ease;
 
 </style>
 <body>
+    
     <!-- Navbar fijo en la parte superior -->
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid">
@@ -143,6 +144,20 @@ ease;
             </div>
         </div>
     </div>
+    <?php if(isset($_SESSION['mensaje_warning'])): ?>
+    <script>
+    Swal.fire({
+        icon: 'warning',
+        title: 'Acceso restringido',
+        text: '<?php echo $_SESSION['mensaje_warning']; ?>',
+        confirmButtonColor: '#DAB561',
+        confirmButtonText: 'Entendido'
+    });
+    </script>
+    <?php 
+        unset($_SESSION['mensaje_warning']); 
+    endif; 
+    ?>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>

@@ -1,4 +1,4 @@
-<footer class="footer-custom" style="background-color: #355B38; color: white; padding: 40px 0;">
+<footer class="footer-custom" style="background-color: #355B38; color: white; padding: 40px 0; margin-top: 10rem;">
     <div class="container">
         <div class="row">
             <!-- Columna 1: Información del Shopping -->
@@ -42,9 +42,23 @@
                 <h5 class="mb-3">Navegación</h5>
                 <ul class="list-unstyled">
                     <li class="mb-2"><a href="index.php" class="text-white text-decoration-none">🏠 Inicio</a></li>
-                    <li class="mb-2"><a href="locales.php" class="text-white text-decoration-none">🏪 Locales</a></li>
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">🎁 Promociones</a></li>
                     <li class="mb-2"><a href="contacto.php" class="text-white text-decoration-none">📧 Contacto</a></li>
+                    <?php
+                    if (isset($_SESSION['tipoUsuario'])) {
+                        if ($_SESSION['tipoUsuario'] === 'cliente') {
+                            echo '<li class="mb-2"><a href="cuentaUsuario.php" class="text-white text-decoration-none">👤 Mi Cuenta</a></li>';
+                        } elseif ($_SESSION['tipoUsuario'] === 'dueño de local') {
+                            echo '<li class="mb-2"><a href="cuentaDueño.php" class="text-white text-decoration-none">👤 Mi Cuenta</a></li>';
+                        }
+                        else{
+                            echo '<li class="mb-2"><a href="administraDueno(SDB).php" class="text-white text-decoration-none">👤 Panel de Administración</a></li>';
+                        }
+                    }
+                    
+                    ?>
+                    <!-- <li class="mb-2"><a href="locales.php" class="text-white text-decoration-none">🏪 Locales</a></li> -->
+                    <li class="mb-2"><a href="tablaPromocionesComp.php" class="text-white text-decoration-none">🎁 Promociones</a></li>
+                    
                     
                 </ul>
             </div>

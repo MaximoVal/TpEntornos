@@ -11,20 +11,62 @@
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../Estilos/estilos.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../Estilos/estilos.css"> -->
 </head>
+<style>
+    .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.25);
+}
+#carouselMini {
+    width: 400px;        
+    margin: 20px auto;   
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+#carouselMini:hover {
+    transform: scale(1.05); /* 🔍 Se agranda suavemente */
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3); 
+}
+
+#carouselMini img {
+    height: 180px;
+    object-fit: cover;
+    transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+#carouselMini:hover img {
+    transform: scale(1.08); /* 📸 La imagen también se agranda un poquito */
+    filter: brightness(1.1); /* ✨ Se ve más viva */
+}
+</style>
 <body>
     
     <?php 
+
         if(!isset($_SESSION['usuario'])) {
             include 'navNoRegistrado.php';   
         } else if($_SESSION['tipoUsuario'] == 'cliente') {
-            include 'navCliente.php';  
-        } else if($_SESSION['tipoUsuario'] == 'dueño de local') {
-            include 'navDueño.php';  
-        } else {
-            include 'navAdmin.php';  
-        }
+            
+                include 'navCliente.php';  
+            }
+            
+        else if($_SESSION['tipoUsuario'] == 'dueño de local') {
+                include 'navDueño.php';  
+            }
+        else {
+                include 'navAdmin.php';  
+            }
     ?>
 
     <!-- Carousel mejorado -->
@@ -41,9 +83,16 @@
     </div>
 
     <!-- Sección de Servicios -->
+    
     <section class="servicios-section" id="servicios">
         <div class="container">
-            <h2 class="section-title">Promociones</h2>
+            <div id="carouselMini" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <a href="tablaPromocionesComp.php"><img src="../Footage/promocionesFoto.jpeg" class="d-block w-100" alt="Promo"></a>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <!--Tarjetas de Categorias-->
                 <div class="col-lg-4 col-md-6">
@@ -59,6 +108,7 @@
                     </div>
                 </div>
 
+
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
                         <div class="card-img-placeholder" style="background-image: url('../Footage/PatioComida.png'); background-size: cover; background-position: center;">
@@ -71,6 +121,7 @@
                         </div>
                     </div>
                 </div>
+
 
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
@@ -85,6 +136,7 @@
                     </div>
                 </div>
 
+
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
                         <div class="card-img-placeholder" style="background-image: url('../Footage/Tecnologia.png'); background-size: cover; background-position: center;">
@@ -97,6 +149,7 @@
                         </div>
                     </div>
                 </div>
+
 
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
@@ -111,9 +164,10 @@
                     </div>
                 </div>
 
+
                 <div class="col-lg-4 col-md-6">
                     <div class="card card-custom">
-                        <div class="card-img-placeholder">
+                        <div class="card-img-placeholder" style="background-image: url('https://images.pexels.com/photos/1050244/pexels-photo-1050244.jpeg'); background-size: cover; background-position: center;">
                             🎉 OTROS
                         </div>
                         <div class="card-body card-body-custom">
@@ -125,7 +179,7 @@
                 </div>
             </div>
         </div>
-    </section>
+</section>
 
     <!-- Carousel de Novedades -->
     <div class="container my-5">

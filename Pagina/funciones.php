@@ -24,3 +24,16 @@ function insertarRegistroNuevo($email, $password){
     $sql = "INSERT INTO usuarios (email, contraseña) VALUES ('$email', '$password')";
     return consultaSQL($sql);
 }
+
+function actualizaCategoriaCliente($codCliente){
+    $sqlCliente="SELECT * FROM usuarios WHERE codUsuario='$codCliente'";
+    $resultCliente=consultaSQL($sqlCliente);
+    $cliente=mysqli_fetch_assoc($resultCliente);
+    if($cliente['cantPromoUsada']>=6){
+        $sqlActualizaUsoCliente="UPDATE usuarios SET categoriaCliente='Premium' WHERE codUsuario='$codCliente'";
+        consultaSQL($sqlActualizaUsoCliente);
+    }elseif($cliente['cantPromoUsada']<=6 && $cliente['cantPromoUsada']>=3){
+        $sqlActualizaUsoCliente="UPDATE usuarios SET categoriaCliente='Medium' WHERE codUsuario='$codCliente'";
+        consultaSQL($sqlActualizaUsoCliente);
+    }
+}

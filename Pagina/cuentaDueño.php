@@ -1,7 +1,7 @@
 <?php
+    
+    include_once("funciones.php");
     session_start();
-    include("funciones.php"); // conexión a la BD
-
     $email = $_SESSION['usuario'];
 
     // Consultamos los datos del usuario
@@ -83,6 +83,7 @@
     <title>Administración de Cuenta</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="../Estilos/estilos.css">
     <link rel="stylesheet" href="../Estilos/usuarioCuentaEstilos.css">
 
@@ -90,26 +91,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-custom">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="index.php">
-                <img src="../Footage/Logo.png" alt="Paseo de la Fortuna Logo" style="margin=0;border:none;">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contacto.php">Contacto</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <?php include 'navDueño.php'; ?>
     <div class="container">
         <!-- Header -->
         <div class="header">
@@ -128,25 +110,64 @@
                     </h3>
                     <p><?php echo ($usuario['nombreUsuario'])?></p>
                 </div>
+
+                <div>
+                    <h5>Locales en propiedad</h5>
+                    <?php
+                        $sqlLocales = "SELECT * FROM locales WHERE codDueno = (SELECT codUsuario FROM usuarios WHERE nombreUsuario='$email')";
+                        $resultadoLocales = consultaSQL($sqlLocales);
+
+                        if($resultadoLocales && mysqli_num_rows($resultadoLocales) > 0){
+                            echo '<ul class="locales-list">';
+                            while($local = mysqli_fetch_assoc($resultadoLocales)){
+                               echo '<i class="bi bi-shop me-2" style="color: var(--color-dorado-oscuro); font-size: 1.3rem;"></i>' . $local['nombreLocal'];
+                            }
+                            echo '</ul>';
+                        } else {
+                            echo '<p>No tienes locales registrados.</p>';
+                        }
+                    ?>
+                </div>
             </div>
 
             <!-- Content Area -->
             <div class="content-area">
                 <h2 class="section-title">Información Personal</h2>
-                
+                <?php
+                    $consultaStats = "SELECT COUNT(*) AS promociones_activas FROM promociones WHERE codLocal IN (SELECT codLocal FROM locales WHERE codDueno = (SELECT codUsuario FROM usuarios WHERE nombreUsuario='$email'))";
+                    $resultadoStats = consultaSQL($consultaStats);
+                    $stats = mysqli_fetch_assoc($resultadoStats);
+                ?>
                 <!-- Stats -->
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-number">127</div>
-                        <div>Días Activo</div>
+                        <div class="stat-number">
+                            <?php echo $stats['promociones_activas']; ?>
+                        </div>
+                        <div>Promociones activas</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number">15</div>
-                        <div>Promociones usadas</div>
+                        <div class="stat-number">
+                            <?php 
+                                $consultaSolicitadas = "SELECT COUNT(*) AS promociones_solicitadas FROM uso_promociones WHERE codPromo IN (SELECT codPromo FROM promociones WHERE codLocal IN (SELECT codLocal FROM locales WHERE codDueno = (SELECT codUsuario FROM usuarios WHERE nombreUsuario='$email')))";
+                                $resultadoSolicitadas = consultaSQL($consultaSolicitadas);
+                                $solicitadas = mysqli_fetch_assoc($resultadoSolicitadas);
+                                echo $solicitadas['promociones_solicitadas'];
+                            ?>
+                        </div>
+                        <div>Promociones solicitadas</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number">98%</div>
-                        <div>Promociones denegadas</div>
+                        <div class="stat-number">
+                            <?php 
+                                $consultaAprobadas = "SELECT COUNT(*) AS promociones_aprobadas FROM uso_promociones WHERE estado='aceptada' AND codPromo IN (SELECT codPromo FROM promociones WHERE codLocal IN (SELECT codLocal FROM locales WHERE codDueno = (SELECT codUsuario FROM usuarios WHERE nombreUsuario='$email')))";
+                                $resultadoAprobadas = consultaSQL($consultaAprobadas);
+                                $aprobadas = mysqli_fetch_assoc($resultadoAprobadas);
+                                $porcentaje=($aprobadas['promociones_aprobadas']/$solicitadas['promociones_solicitadas'])*100;
+                                echo $porcentaje . "%";
+                            ?>    
+                        </div>
+                        <div>Promociones aprobadas</div>
                     </div>
                 </div>
 

@@ -73,6 +73,14 @@
         header("Location: index.php");
         exit();
     }
+
+    $emali=$_SESSION['usuario'];
+    $medium=3;
+    $premium=6;
+    $consulta="SELECT * FROM usuarios WHERE nombreUsuario='$emali'";
+     $resultado=consultaSQL($consulta);
+    $fila=mysqli_fetch_assoc($resultado);
+   
 ?>
 
 <!DOCTYPE html>
@@ -120,16 +128,39 @@
                 <!-- Stats -->
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-number">127</div>
-                        <div>Días Activo</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">15</div>
+                        <div class="stat-number">
+                            <?php
+                                $cantidadUsada=$fila['cantPromoUsada'];
+                                echo $cantidadUsada;    
+                            ?>
+                        </div>
                         <div>Promociones usadas</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number">98%</div>
-                        <div>Promociones denegadas</div>
+                        <div class="stat-number">
+                            <?php
+                            
+                                $categoriaActual = $fila['categoriaCliente'];
+                                $categoriaActual = ucfirst($categoriaActual); 
+                                echo $categoriaActual;
+                            ?>
+                        </div>
+                        <div>Categoria actual</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">
+                            <?php
+                                if($categoriaActual == 'Inicial'){
+                                    $promocionesFaltantes = $medium - $cantidadUsada;
+                                } elseif($categoriaActual == 'Medium'){
+                                    $promocionesFaltantes = $premium - $cantidadUsada;
+                                } else {
+                                    $promocionesFaltantes = "Rango maximo "; // Ya es premium
+                                }
+                                echo $promocionesFaltantes;
+                            ?>
+                        </div>
+                        <div>Promociones para mejorar categoria</div>
                     </div>
                 </div>
 

@@ -15,12 +15,13 @@ if(isset($_POST['enviar'])) {
 
     $sqlInster="INSERT INTO novedades (nombre, descripciónNovedad, categoria, tipoCliente, fechaDesdeNovedad, fechaHastaNovedad) VALUES ('$nombre', '$descripcion', '$categoria', '$tipoCliente', '$fechaDesde', '$fechaHasta')";
     $resultado = consultaSQL($sqlInster);
-    
+
+    if($resultado) {
+        $_SESSION['novedad_ok'] = 'La novedad se ha creado correctamente';
+        // header('Location: crearNovedad.php');
+        // exit();
+    }
 }
-
-
-
-
 
 ?>
 
@@ -110,7 +111,7 @@ if(isset($_POST['enviar'])) {
                                 <label class="form-label">Descripción</label>
                                 <textarea class="form-control" id="descripcion" name="descripcion" rows="6" 
                                           placeholder="Escribe aquí la descripción de la novedad..." required></textarea>
-
+                            </div>
 
                             <!-- Rubro -->
                             <div class="mb-3">
@@ -181,9 +182,23 @@ if(isset($_POST['enviar'])) {
         </div>
     </main>
 
+    <!-- Alerta de éxito -->
+    <?php if(isset($_SESSION['novedad_ok'])) { ?>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Novedad creada exitosamente',
+            text: '<?php echo $_SESSION['novedad_ok']; ?>',
+        });
+        </script>
+        <?php
+            unset($_SESSION['novedad_ok']); // lo borro para no repetirlo
+        } 
+    ?>
+    
     <!-- Footer -->
     <?php include 'footer.php'; ?>
-
 
 </body>
 </html>

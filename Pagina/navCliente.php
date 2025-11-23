@@ -69,45 +69,94 @@
             background-color: var(--color-dorado);
             border-color: var(--color-dorado);
         }
+        #buscar {
+        position: relative;
+    }
+
+    #resultado {
+        position: absolute;
+        top: 100%;        
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        background: white;
+        border: 1px solid #ccc;
+        display: none;    
+    }
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-custom">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="index.php" style="margin=0;border:none;">
-                <img src="../Footage/Logo.png" alt="Paseo de la Fortuna Logo"style="margin=0;border:none;">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="background-color: #DAB561; border: none;">
-              <img src="menu.png" alt="Desplegar menu">  
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">Inicio</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarCuenta" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            
-                            Cuenta
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarCuenta">
-                            <li>
-                                <a class="dropdown-item" href="cuentaUsuario.php">Administrar Cuenta</a>
-                            </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <a class="dropdown-item text-danger" href="cerrar_sesion.php">Cerrar Sesión</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="contacto.php">Contacto</a>
-                    </li>
-                </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Buscar tiendas..." aria-label="Search">
-                    <button class="btn" id="boton-nav" type="submit">Buscar</button>
-                </form>
-            </div>
+    <div class="container-fluid">
+        <a class="navbar-brand" href="index.php" style="margin:0;border:none;">
+            <img src="../Footage/Logo.png" alt="Paseo de la Fortuna Logo" style="margin:0;border:none;">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="background-color: #DAB561; border: none;">
+                    <i class="bi bi-list" style="font-size: 2rem; color: #000;"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.php">Inicio</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarCuenta" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        
+                        Cuenta
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarCuenta">
+                        <li>
+                            <a class="dropdown-item" href="cuentaUsuario.php">Administrar Cuenta</a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="cerrar_sesion.php">Cerrar Sesión</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contacto.php">Contacto</a>
+                </li>
+            </ul>
+            
+            <!-- Formulario de búsqueda con mejor responsividad -->
+            <form class="d-flex flex-column flex-lg-row mt-3 mt-lg-0 position-relative" action="tablaPromocionesXDueno.php" method="POST" style="width: 100%; max-width: 400px;">
+                <div class="position-relative flex-grow-1 mb-2 mb-lg-0 me-lg-2">
+                    <input id="buscar" class="form-control" type="search" placeholder="Buscar tiendas..." aria-label="Search" name="nombreLocal">
+                    <div id="resultado" class="list-group position-absolute w-100" style="z-index: 1050;"></div>
+                </div>
+                <button class="btn" id="boton-nav" type="submit">Buscar</button>
+            </form>
         </div>
-    </nav>
+    </div>
+</nav>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#buscar").on("keyup", function(){
+        let texto = $(this).val();
+        
+        if(texto.length >= 1){
+            $.post("buscarLocal.php", { query: texto }, function(data){
+                $("#resultado").html(data).show();
+            });
+        } else {
+            $("#resultado").hide();
+        }
+    });
+
+    // Cuando hago click en una sugerencia
+    $(document).on("click", ".item", function(){
+        $("#buscar").val($(this).text());
+        $("#resultado").hide();
+    });
+    
+    // Ocultar resultados al hacer click fuera
+    $(document).on("click", function(e){
+        if(!$(e.target).closest("#buscar, #resultado").length){
+            $("#resultado").hide();
+        }
+    });
+});
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

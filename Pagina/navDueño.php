@@ -71,27 +71,30 @@ if(mysqli_num_rows($res) > 0){
                     <img src="../Footage/Logo.png" alt="Paseo de la Fortuna Logo"style="margin=0;border:none;">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="background-color: #DAB561; border: none;">
-                <img src="menu.png" alt="Desplegar menu">  
+                    <i class="bi bi-list" style="font-size: 2rem; color: #000;"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item dropdown">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.php">Inicio</a>
+                        </li>
+                        <li class="nav-item dropdown position-relative" >
                             <a class="nav-link dropdown-toggle" href="#" id="navbarCuenta" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user-circle me-1"></i>
+                                
                                 Local
                             </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarCuenta">
-                                <li>
-                                    <a class="dropdown-item" href="cuentaDueño.php">Ver descuentos</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="administraDueno(SDB).php">Panel de Administración</a>
-                                </li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <a class="dropdown-item text-danger" href="cerrar_sesion.php">Cerrar Sesión</a>
-                                </li>
-                            </ul>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarCuenta">
+                                    <li class="item-abajo">
+                                        <a class="dropdown-item" href="cuentaDueño.php">Administrar cuenta</a>
+                                    </li>
+                                    <li class="item-abajo">
+                                        <a class="dropdown-item" href="administraDueno(SDB).php">Panel de Administración</a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li class="item-abajo">
+                                        <a class="dropdown-item text-danger" href="cerrar_sesion.php">Cerrar Sesión</a>
+                                    </li>
+                                </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="contacto.php">Contacto</a>

@@ -1,6 +1,15 @@
 <?php 
 // include 'funciones.php';
 ?>
+<head>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../Estilos/estilos.css">
+    <!-- <link rel="stylesheet" href="../Estilos/usuarioCuentaEstilos.css"> -->
+
+    
+</head>
 <style>
   *
   {
@@ -50,9 +59,9 @@
             </a>
 
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="background-color: #DAB561; border: none;">
+                    <i class="bi bi-list" style="font-size: 2rem; color: #000;"></i>
+                </button>
 
 
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
@@ -72,3 +81,4 @@
     </div>
   </div>
 </nav>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
