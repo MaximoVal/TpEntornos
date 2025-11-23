@@ -4,7 +4,7 @@
     $hoy= date('Y-m-d');
 
     include('funciones.php');
-
+    $tipoUsuario = '';
     if(isset($_SESSION['usuario'])){
     $emailUsu = $_SESSION['usuario'];
     $sqlCategoriaCliente = "SELECT * FROM usuarios WHERE nombreUsuario='$emailUsu'";
@@ -14,18 +14,14 @@
     $codCliente = $rc['codUsuario'];
     $tipoUsuario = $rc['tipoUsuario'];
     
+    // Si es dueño o administrador, tratarlos como Premium para ver todas las promociones
     if($tipoUsuario == 'dueño de local' || $tipoUsuario == 'administrador'){
         $resultadoCat = 'Premium'; 
     }
-    
 } else {
-
-    $_SESSION['mensaje_warning'] = 'Debes iniciar sesión para ver las promociones disponibles.';
-    $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
-    header('Location: login.php');
-    exit();
+    
+     $resultadoCat = 'Premium'; 
 }
-
 // Capturar categoría del menú
 $categoria = isset($_GET['categoria']) ? $_GET['categoria'] : '';
 
@@ -132,7 +128,7 @@ if(isset($resultadoCat)){
 
         $totalPaginas = max(1, ceil($total / $porPagina));
 
-        if($tipoUsuario == 'dueño de local' || $tipoUsuario == 'administrador'){
+        if($tipoUsuario == 'dueño de local' || $tipoUsuario == 'administrador' || !isset($_SESSION['usuario'])){
             $sqlPromosCategoricas = "SELECT p.* 
                                     FROM promociones p
                                     WHERE p.estadoPromo='aprobada' 
@@ -216,7 +212,12 @@ if(isset($_POST['solicitarPromo'])){
         }
     a{
         color:color: var(--bs-body-color) !important;
-    }   
+    }
+    .page-item.active .page-link {
+        background-color: var(--color-dorado-oscuro);
+        border-color: var(--color-dorado-oscuro);
+        color: #fff;
+    }
         
 </style>
 <body class="d-flex flex-column min-vh-100">
@@ -297,7 +298,7 @@ if(isset($_POST['solicitarPromo'])){
                         <th>Dias Habilitados</th>
                         <th><?php
 
-                                        if($tipoUsuario == 'dueño de local' || $tipoUsuario == 'administrador') {
+                                        if($tipoUsuario == 'dueño de local' || $tipoUsuario == 'administrador' || !isset($_SESSION['usuario'])) {
                                             
                                         } else {
                                             echo 'Acciones';
@@ -321,7 +322,7 @@ if(isset($_POST['solicitarPromo'])){
                                     <td>
                                         <?php
 
-                                        if($tipoUsuario == 'dueño de local' || $tipoUsuario == 'administrador') {
+                                        if($tipoUsuario == 'dueño de local' || $tipoUsuario == 'administrador' || !isset($_SESSION['usuario'])) {
                                             
                                         } else {
                                             echo '<button class="btn btn-sm btn-success" name="solicitarPromo">
