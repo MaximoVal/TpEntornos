@@ -12,6 +12,13 @@ if(isset($_SESSION['usuario'])){
     $rc = mysqli_fetch_assoc($resultadoCategoria);
     $resultadoCat = $rc['categoriaCliente'];
     $codCliente = $rc['codUsuario'];
+    $tipoUsuario = $rc['tipoUsuario'];
+    
+    // Si es dueño o administrador, mostrar todas las promociones (como Premium)
+    if($tipoUsuario == 'dueño de local' || $tipoUsuario == 'administrador'){
+        $resultadoCat = 'Premium'; // Los trata como Premium para ver todas
+    }
+    
 } else {
     // Redirigir a login si no hay sesión
     $_SESSION['mensaje_warning'] = 'Debes iniciar sesión para ver las promociones disponibles.';
@@ -40,111 +47,120 @@ if(isset($resultadoCat)){
     // --- INICIAL ---
     if($resultadoCat == 'Inicial'){
 
-    $sqlCount = "SELECT COUNT(*) AS total 
-                FROM promociones p
-                WHERE p.estadoPromo='aprobada' 
-                AND p.categoriaCliente='Inicial'
-                AND p.fechaHastaPromo >= '$hoy'
-                AND NOT EXISTS (
-                    SELECT 1 
-                    FROM uso_promociones up 
-                    WHERE up.codPromo = p.codPromo 
-                    AND up.codCliente = '$codCliente'
-                )
-                $filtroCategoria";
+        $sqlCount = "SELECT COUNT(*) AS total 
+                    FROM promociones p
+                    WHERE p.estadoPromo='aprobada' 
+                    AND p.categoriaCliente='Inicial'
+                    AND p.fechaHastaPromo >= '$hoy'
+                    AND NOT EXISTS (
+                        SELECT 1 
+                        FROM uso_promociones up 
+                        WHERE up.codPromo = p.codPromo 
+                        AND up.codCliente = '$codCliente'
+                    )
+                    $filtroCategoria";
 
-    $resultCount = consultaSQL($sqlCount);
-    $total = mysqli_fetch_assoc($resultCount)['total'];
+        $resultCount = consultaSQL($sqlCount);
+        $rowCount = mysqli_fetch_assoc($resultCount);
+        $total = $rowCount['total'] ?? 0;
 
-    $totalPaginas = ceil($total / $porPagina);
+        $totalPaginas = max(1, ceil($total / $porPagina));
 
-    $sqlPromosCategoricas = "SELECT p.* 
-                            FROM promociones p
-                            WHERE p.estadoPromo='aprobada' 
-                            AND p.categoriaCliente='Inicial'
-                            AND p.fechaHastaPromo >= '$hoy'
-                            AND NOT EXISTS (
-                                SELECT 1 
-                                FROM uso_promociones up 
-                                WHERE up.codPromo = p.codPromo 
-                                AND up.codCliente = '$codCliente'
-                            )
-                            $filtroCategoria
-                            ORDER BY p.fechaDesdePromo ASC
-                            LIMIT $porPagina OFFSET $offset";
+        $sqlPromosCategoricas = "SELECT p.* 
+                                FROM promociones p
+                                WHERE p.estadoPromo='aprobada' 
+                                AND p.categoriaCliente='Inicial'
+                                AND p.fechaHastaPromo >= '$hoy'
+                                AND NOT EXISTS (
+                                    SELECT 1 
+                                    FROM uso_promociones up 
+                                    WHERE up.codPromo = p.codPromo 
+                                    AND up.codCliente = '$codCliente'
+                                )
+                                $filtroCategoria
+                                ORDER BY p.fechaDesdePromo ASC
+                                LIMIT $porPagina OFFSET $offset";
 
-// --- MEDIUM ---
-} elseif($resultadoCat == 'Medium') {
+    // --- MEDIUM ---
+    } elseif($resultadoCat == 'Medium') {
 
-    $sqlCount = "SELECT COUNT(*) AS total 
-                FROM promociones p
-                WHERE p.estadoPromo='aprobada' 
-                AND (p.categoriaCliente='Inicial' OR p.categoriaCliente='Medium')
-                AND p.fechaHastaPromo >= '$hoy'
-                AND NOT EXISTS (
-                    SELECT 1 
-                    FROM uso_promociones up 
-                    WHERE up.codPromo = p.codPromo 
-                    AND up.codCliente = '$codCliente'
-                )
-                $filtroCategoria";
+        $sqlCount = "SELECT COUNT(*) AS total 
+                    FROM promociones p
+                    WHERE p.estadoPromo='aprobada' 
+                    AND (p.categoriaCliente='Inicial' OR p.categoriaCliente='Medium')
+                    AND p.fechaHastaPromo >= '$hoy'
+                    AND NOT EXISTS (
+                        SELECT 1 
+                        FROM uso_promociones up 
+                        WHERE up.codPromo = p.codPromo 
+                        AND up.codCliente = '$codCliente'
+                    )
+                    $filtroCategoria";
 
-    $resultCount = consultaSQL($sqlCount);
-    $total = mysqli_fetch_assoc($resultCount)['total'];
+        $resultCount = consultaSQL($sqlCount);
+        $rowCount = mysqli_fetch_assoc($resultCount);
+        $total = $rowCount['total'] ?? 0;
 
-    $totalPaginas = ceil($total / $porPagina);
+        $totalPaginas = max(1, ceil($total / $porPagina));
 
-    $sqlPromosCategoricas = "SELECT p.* 
-                            FROM promociones p
-                            WHERE p.estadoPromo='aprobada' 
-                            AND (p.categoriaCliente='Inicial' OR p.categoriaCliente='Medium')
-                            AND p.fechaHastaPromo >= '$hoy'
-                            AND NOT EXISTS (
-                                SELECT 1 
-                                FROM uso_promociones up 
-                                WHERE up.codPromo = p.codPromo 
-                                AND up.codCliente = '$codCliente'
-                            )
-                            $filtroCategoria
-                            ORDER BY p.fechaDesdePromo ASC
-                            LIMIT $porPagina OFFSET $offset";
+        $sqlPromosCategoricas = "SELECT p.* 
+                                FROM promociones p
+                                WHERE p.estadoPromo='aprobada' 
+                                AND (p.categoriaCliente='Inicial' OR p.categoriaCliente='Medium')
+                                AND p.fechaHastaPromo >= '$hoy'
+                                AND NOT EXISTS (
+                                    SELECT 1 
+                                    FROM uso_promociones up 
+                                    WHERE up.codPromo = p.codPromo 
+                                    AND up.codCliente = '$codCliente'
+                                )
+                                $filtroCategoria
+                                ORDER BY p.fechaDesdePromo ASC
+                                LIMIT $porPagina OFFSET $offset";
 
-// --- PREMIUM / OTROS ---
-} else {
+    // --- PREMIUM / DUEÑOS / ADMINISTRADORES ---
+    } else {
 
-    $sqlCount = "SELECT COUNT(*) AS total 
-                FROM promociones p
-                WHERE p.estadoPromo='aprobada' 
-                AND p.fechaHastaPromo >= '$hoy'
-                AND NOT EXISTS (
-                    SELECT 1 
-                    FROM uso_promociones up 
-                    WHERE up.codPromo = p.codPromo 
-                    AND up.codCliente = '$codCliente'
-                )
-                $filtroCategoria";
+        $sqlCount = "SELECT COUNT(*) AS total 
+                    FROM promociones p
+                    WHERE p.estadoPromo='aprobada' 
+                    AND p.fechaHastaPromo >= '$hoy'
+                    $filtroCategoria";
 
-    $resultCount = consultaSQL($sqlCount);
-    $total = mysqli_fetch_assoc($resultCount)['total'];
+        $resultCount = consultaSQL($sqlCount);
+        $rowCount = mysqli_fetch_assoc($resultCount);
+        $total = $rowCount['total'] ?? 0;
 
-    $totalPaginas = ceil($total / $porPagina);
+        $totalPaginas = max(1, ceil($total / $porPagina));
 
-    $sqlPromosCategoricas = "SELECT p.* 
-                            FROM promociones p
-                            WHERE p.estadoPromo='aprobada' 
-                            AND p.fechaHastaPromo >= '$hoy'
-                            AND NOT EXISTS (
-                                SELECT 1 
-                                FROM uso_promociones up 
-                                WHERE up.codPromo = p.codPromo 
-                                AND up.codCliente = '$codCliente'
-                            )
-                            $filtroCategoria
-                            ORDER BY p.fechaDesdePromo ASC
-                            LIMIT $porPagina OFFSET $offset";
-}
+        // Para dueños y admins, no verificar si ya solicitaron (pueden ver todas)
+        if($tipoUsuario == 'dueño de local' || $tipoUsuario == 'administrador'){
+            $sqlPromosCategoricas = "SELECT p.* 
+                                    FROM promociones p
+                                    WHERE p.estadoPromo='aprobada' 
+                                    AND p.fechaHastaPromo >= '$hoy'
+                                    $filtroCategoria
+                                    ORDER BY p.fechaDesdePromo ASC
+                                    LIMIT $porPagina OFFSET $offset";
+        } else {
+            // Para clientes Premium, verificar si ya solicitaron
+            $sqlPromosCategoricas = "SELECT p.* 
+                                    FROM promociones p
+                                    WHERE p.estadoPromo='aprobada' 
+                                    AND p.fechaHastaPromo >= '$hoy'
+                                    AND NOT EXISTS (
+                                        SELECT 1 
+                                        FROM uso_promociones up 
+                                        WHERE up.codPromo = p.codPromo 
+                                        AND up.codCliente = '$codCliente'
+                                    )
+                                    $filtroCategoria
+                                    ORDER BY p.fechaDesdePromo ASC
+                                    LIMIT $porPagina OFFSET $offset";
+        }
+    }
 
-$resultPromosTotales = consultaSQL($sqlPromosCategoricas);
+    $resultPromosTotales = consultaSQL($sqlPromosCategoricas);
 }
 // Resto de funciones...
 function obtenNombreLocal($codLocal){

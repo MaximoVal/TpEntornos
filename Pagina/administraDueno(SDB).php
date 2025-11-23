@@ -141,7 +141,7 @@ if(isset($_GET['accion'])){
                 } elseif($accion=='verSolicitudesDueno'){
                     include('verSolicitudesDueno.php');
                 } elseif($accion=='verReportes'){
-                    include('reportes.php');
+                    include('verReportesDueno.php');
                 }
             } else { ?>
             <!-- Panel de Administración (Vista Principal) -->

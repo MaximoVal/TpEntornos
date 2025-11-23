@@ -36,38 +36,68 @@ $telefono = "+54 11 1234-5678";
     <!-- HEADER -->
     <?php include 'navAdmin.php'; ?>
     <!-- CONTENEDOR PRINCIPAL -->
-    <main class="container-fluid my-4 ">
-        <div class="row">
-            <!-- LADO IZQUIERDO - VÍNCULOS -->
-            <aside class="col-md-4 col-lg-3 mb-4">
-                <div class="card sidebar-links">
+   <main class="container-fluid my-4">
+    <div class="row">
+        <!-- LADO IZQUIERDO - VÍNCULOS -->
+        <aside class="col-md-4 col-lg-3 mb-4">
+            <div class="card sidebar-links sidebar-fixed">
                 <div class="card-body d-flex flex-column justify-content-start">
-                    <h3 class="card-title title">Panel administrador </h3>
+                    <h3 class="card-title title">Panel administrador</h3>
                     <div class="list-group">
-                        <a href="duenosAdmin(SDB).php" class="list-group-item list-group-item-action ">Administrar dueños</a>
-                        <a href="administraLocalAdmin.php" class="list-group-item list-group-item-action ">Administrar locales</a>
+                        <a href="duenosAdmin(SDB).php" class="list-group-item list-group-item-action">Administrar dueños</a>
+                        <a href="administraLocalAdmin.php" class="list-group-item list-group-item-action">Administrar locales</a>
                         <a href="administrarPromocionesAdmin.php" class="list-group-item list-group-item-action active">Administrar promociones</a>
-                        <a href="creaLocalAdmin.php" class="list-group-item list-group-item-action ">Crear local</a>
-                        <a href="crearNovedad.php" class="list-group-item list-group-item-action ">Crear novedad</a>
+                        <a href="creaLocalAdmin.php" class="list-group-item list-group-item-action">Crear local</a>
+                        <a href="crearNovedad.php" class="list-group-item list-group-item-action">Crear novedad</a>
                         <a href="eliminaLocalAdmin.php" class="list-group-item list-group-item-action">Eliminar local</a>   
                     </div>
                 </div>
-                </div>
-            </aside>
+            </div>
+        </aside>
 
-            <!-- CONTENIDO PRINCIPAL -->
-            <section class="col-md-7 col-lg-8">
-                <div class="p-4 bg-white shadow rounded-3">
-                    <h4 class="mb-4" style="color: var(--color-negro); font-weight:600;">Solicitudes de promociones</h4>
+        <!-- CONTENIDO PRINCIPAL -->
+        <section class="col-md-8 col-lg-9">
+            <div class="p-4 bg-white shadow rounded-3 mb-4">
+                <h4 class="mb-4" style="color: var(--color-negro); font-weight:600;">Solicitudes de promociones</h4>
+                <?php include "verificarPromocionesAdmin.php"; ?>
+            </div>
+            
+            <div class="p-4 bg-white shadow rounded-3">
+                <h4 class="mb-4" style="color: var(--color-negro); font-weight:600;">Reportes de promociones</h4>
+                <?php include "verReportesAdmin.php"; ?>
+            </div>
+        </section>
+    </div>
+</main>
 
-                    <?php
-                    include "verificarPromocionesAdmin.php";
-                    
-                    ?>
-                </div>
-            </section>
-        </div>
-    </main>
+<style>
+.sidebar-fixed {
+    position: sticky;
+    top: 20px; /* Ajusta según necesites */
+    align-self: flex-start; /* IMPORTANTE: esto hace que funcione correctamente */
+}
+
+/* Opcional: mejorar la apariencia */
+.list-group-item.active {
+    background-color: var(--color-dorado) !important;
+    border-color: var(--color-dorado) !important;
+    color: var(--color-negro) !important;
+    font-weight: 600;
+}
+
+.list-group-item:hover {
+    background-color: rgba(218, 181, 97, 0.2);
+    transition: all 0.3s ease;
+}
+
+/* Responsive: desactivar en móviles */
+@media (max-width: 768px) {
+    .sidebar-fixed {
+        position: relative;
+        top: 0;
+    }
+}
+</style>
 
     <!-- Footer -->
     <?php include 'footer.php'; ?>

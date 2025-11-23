@@ -12,8 +12,14 @@
     $rc = mysqli_fetch_assoc($resultadoCategoria);
     $resultadoCat = $rc['categoriaCliente'];
     $codCliente = $rc['codUsuario'];
+    $tipoUsuario = $rc['tipoUsuario'];
+    
+    if($tipoUsuario == 'dueño de local' || $tipoUsuario == 'administrador'){
+        $resultadoCat = 'Premium'; 
+    }
+    
 } else {
-    // Redirigir a login si no hay sesión
+
     $_SESSION['mensaje_warning'] = 'Debes iniciar sesión para ver las promociones disponibles.';
     $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
     header('Location: login.php');
@@ -111,19 +117,13 @@ if(isset($resultadoCat)){
                                 ORDER BY p.fechaDesdePromo ASC
                                 LIMIT $porPagina OFFSET $offset";
 
-    // --- PREMIUM / OTROS ---
+    // --- PREMIUM / DUEÑOS / ADMINISTRADORES ---
     } else {
 
         $sqlCount = "SELECT COUNT(*) AS total 
                     FROM promociones p
                     WHERE p.estadoPromo='aprobada' 
                     AND p.fechaHastaPromo >= '$hoy'
-                    AND NOT EXISTS (
-                        SELECT 1 
-                        FROM uso_promociones up 
-                        WHERE up.codPromo = p.codPromo 
-                        AND up.codCliente = '$codCliente'
-                    )
                     $filtroCategoria";
 
         $resultCount = consultaSQL($sqlCount);
@@ -132,19 +132,30 @@ if(isset($resultadoCat)){
 
         $totalPaginas = max(1, ceil($total / $porPagina));
 
-        $sqlPromosCategoricas = "SELECT p.* 
-                                FROM promociones p
-                                WHERE p.estadoPromo='aprobada' 
-                                AND p.fechaHastaPromo >= '$hoy'
-                                AND NOT EXISTS (
-                                    SELECT 1 
-                                    FROM uso_promociones up 
-                                    WHERE up.codPromo = p.codPromo 
-                                    AND up.codCliente = '$codCliente'
-                                )
-                                $filtroCategoria
-                                ORDER BY p.fechaDesdePromo ASC
-                                LIMIT $porPagina OFFSET $offset";
+        if($tipoUsuario == 'dueño de local' || $tipoUsuario == 'administrador'){
+            $sqlPromosCategoricas = "SELECT p.* 
+                                    FROM promociones p
+                                    WHERE p.estadoPromo='aprobada' 
+                                    AND p.fechaHastaPromo >= '$hoy'
+                                    $filtroCategoria
+                                    ORDER BY p.fechaDesdePromo ASC
+                                    LIMIT $porPagina OFFSET $offset";
+        } else {
+            // Para clientes Premium, verificar si ya solicitaron
+            $sqlPromosCategoricas = "SELECT p.* 
+                                    FROM promociones p
+                                    WHERE p.estadoPromo='aprobada' 
+                                    AND p.fechaHastaPromo >= '$hoy'
+                                    AND NOT EXISTS (
+                                        SELECT 1 
+                                        FROM uso_promociones up 
+                                        WHERE up.codPromo = p.codPromo 
+                                        AND up.codCliente = '$codCliente'
+                                    )
+                                    $filtroCategoria
+                                    ORDER BY p.fechaDesdePromo ASC
+                                    LIMIT $porPagina OFFSET $offset";
+        }
     }
 
     $resultPromosTotales = consultaSQL($sqlPromosCategoricas);
@@ -284,37 +295,58 @@ if(isset($_POST['solicitarPromo'])){
                         <th>Local</th>
                         <th>Caducidad</th>
                         <th>Dias Habilitados</th>
-                        <th>Acciones</th>
+                        <th><?php
+
+                                        if($tipoUsuario == 'dueño de local' || $tipoUsuario == 'administrador') {
+                                            
+                                        } else {
+                                            echo 'Acciones';
+                                        }
+                                        ?></th>
                     </tr>
                     </thead>
                     <tbody>
-                    
                     <?php
                     if(mysqli_num_rows($resultPromosTotales) != 0){
                         while($promo = mysqli_fetch_assoc($resultPromosTotales)){
-                            
-                    ?><form method="POST" action=""> 
-                            <input type="hidden" name="codPromo" value="<?php echo $promo['codPromo']; ?>">
-                            <tr><td>PR-<?php echo ($promo['codPromo']); ?></td>
-                            <td><?php echo ($promo['textoPromo']); ?></td>
-                            <td><?php echo (obtenNombreLocal($promo['codLocal'])); ?></td>
-                            <td><?php echo ($promo['fechaHastaPromo']); ?></td>
-                            <td><?php echo ($promo['diasSemana']); ?></td>
-                            <td><button class="btn btn-sm btn-success" name="solicitarPromo"><i class="bi bi-check"></i>Solicitar</button>
-                            
-                        </tr></form>
+                    ?>
+                            <form method="POST" action=""> 
+                                <input type="hidden" name="codPromo" value="<?php echo $promo['codPromo']; ?>">
+                                <tr>
+                                    <td>PR-<?php echo $promo['codPromo']; ?></td>
+                                    <td><?php echo $promo['textoPromo']; ?></td>
+                                    <td><?php echo obtenNombreLocal($promo['codLocal']); ?></td>
+                                    <td><?php echo date('d/m/Y', strtotime($promo['fechaHastaPromo'])); ?></td>
+                                    <td><?php echo $promo['diasSemana']; ?></td>
+                                    <td>
+                                        <?php
+
+                                        if($tipoUsuario == 'dueño de local' || $tipoUsuario == 'administrador') {
+                                            
+                                        } else {
+                                            echo '<button class="btn btn-sm btn-success" name="solicitarPromo">
+                                                    <i class="bi bi-check"></i> Solicitar
+                                                </button>';
+                                        }
+                                        ?>
+                                    </td>
+                                </tr>
+                            </form>
                     <?php
                         }
-                    }else{ ?>
-                        <p class="fw-bold" style="color: var(--color-gris);">
-                            <i class="bi bi-search"></i>[NO SE ENCONTRARON PROMOCIONES DISPONIBLES PARA USTED EN ESTA CATEGORIA]
-                        </p> <?php
+                    } else { 
+                    ?>
+                        <tr>
+                            <td colspan="6" class="text-center py-4">
+                                <p class="fw-bold mb-0" style="color: var(--color-gris);">
+                                    <i class="bi bi-search"></i> NO SE ENCONTRARON PROMOCIONES DISPONIBLES PARA USTED EN ESTA CATEGORÍA
+                                </p>
+                            </td>
+                        </tr>
+                    <?php
                     }
-                    if(mysqli_num_rows($resultPromosTotales) == 0){
-                        echo "<tr><td colspan='6'>No hay promociones disponibles.</td></tr>";
-                    }
-                        ?>
-                        </tbody>
+                    ?>
+                </tbody>
                     </table>
                 </div>
                 <nav aria-label="Paginación" class="mt-3">
