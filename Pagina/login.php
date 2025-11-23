@@ -17,26 +17,26 @@ if(isset($_POST['enviar'])){
         if($usuario['contraseña'] === $password){
             $_SESSION['usuario'] = $email;
             $_SESSION['tipoUsuario'] = $usuario['tipoUsuario'];
-            header("Location: index.php");
-            exit();
+            
+            // Redirigir a la página original si existe
+            if(isset($_SESSION['redirect_after_login'])){
+                $redirect = $_SESSION['redirect_after_login'];
+                unset($_SESSION['redirect_after_login']);
+                header("Location: $redirect");
+                exit();
+            } else {
+                header("Location: index.php");
+                exit();
+            }
         } else {
             $mensaje="Contraseña Incorrecta";
         }
     } else {
         // El usuario no existe
         $mensaje="Usuario no registrado, por favor regístrese.";
-        // $sqlInsert = "INSERT INTO usuarios (email, contraseña) VALUES ('$email', '$password')";
-        // if(consultaSQL($sqlInsert)){
-        //     $_SESSION['usuario'] = $email;
-        //     header("Location: index.php");
-        //     exit();
-        // } else {
-        //     echo "<p>Error al registrar usuario</p>";
-        // }
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -48,24 +48,23 @@ if(isset($_POST['enviar'])){
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../Estilos/estilos.css">
     <link rel="stylesheet" href="../Estilos/loginEstilo.css">
-
+    
+    <!-- AGREGADO: SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <style>
-    *
-    {
+    * {
         user-select:none;
     }
     .btn-primary {
-    background: linear-gradient(135deg, var(--color-dorado) 0%, var(--color-dorado-oscuro) 100%);
-    border: none;
-    border-radius: 8px;
-    padding: 12px;
-    font-weight: 500;
-    transition: all 0.3s 
-ease;
-    color: #333;
-}
-
+        background: linear-gradient(135deg, var(--color-dorado) 0%, var(--color-dorado-oscuro) 100%);
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        color: #333;
+    }
 </style>
 <body>
     
@@ -83,7 +82,6 @@ ease;
                     <li class="nav-item">
                         <a class="nav-link" href="index.php">Inicio</a>
                     </li>
-                    
                     <li class="nav-item">
                         <a class="nav-link" href="contacto.php">Contacto</a>
                     </li>
@@ -119,11 +117,13 @@ ease;
                         <input type="password" class="form-control" id="exampleInputPassword1" 
                                name="contraseña" placeholder="Tu contraseña" required>
                         
-                        <!-- Simulación del mensaje de error PHP -->
-                        <div class="form-text text-danger" 
-                            <?php echo $mensaje;?>>
-                            <?php if(isset($mensaje)) echo $mensaje; ?>
+                        <!-- Mensaje de error PHP -->
+                        <?php if(!empty($mensaje)): ?>
+                        <div class="form-text text-danger mt-2">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <?php echo $mensaje; ?>
                         </div>
+                        <?php endif; ?>
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100 mb-3" name="enviar">
@@ -136,14 +136,14 @@ ease;
                             <a href="#" class="text-decoration-none">¿Olvidaste tu contraseña?</a>
                         </small>
                     </div>
-                    
                 </form>
                 <hr>
-                        <p class="text-center">¿No tenes usuario?  <a href="registro.php">Registrarse ahora</a></p>
-                    
+                <p class="text-center">¿No tenes usuario? <a href="registro.php">Registrarse ahora</a></p>
             </div>
         </div>
     </div>
+
+    <!-- SweetAlert para mensaje de sesión -->
     <?php if(isset($_SESSION['mensaje_warning'])): ?>
     <script>
     Swal.fire({

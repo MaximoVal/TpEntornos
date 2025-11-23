@@ -12,6 +12,12 @@ if(isset($_SESSION['usuario'])){
     $rc = mysqli_fetch_assoc($resultadoCategoria);
     $resultadoCat = $rc['categoriaCliente'];
     $codCliente = $rc['codUsuario'];
+} else {
+    // Redirigir a login si no hay sesión
+    $_SESSION['mensaje_warning'] = 'Debes iniciar sesión para ver las promociones disponibles.';
+    $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
+    header('Location: login.php');
+    exit();
 }
 
 // Capturar categoría del menú
