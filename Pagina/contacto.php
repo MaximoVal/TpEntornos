@@ -1,18 +1,41 @@
 <?php
-    session_start();
+session_start();
+require_once 'envioMails.php';
+
+$mensajeExito = '';
+$mensajeError = '';
+
+
+if(isset($_POST["enviar"])){
+    $nombre = htmlspecialchars(trim($_POST['nombre']));
+    $email = htmlspecialchars(trim($_POST['email']));
+    $asunto = htmlspecialchars(trim($_POST['asunto']));
+    $mensaje = htmlspecialchars(trim($_POST['mensaje']));
     
-    if(isset($_POST["enviar"])){
-        $nombre = $_POST['nombre'];
-        $email = $_POST['email'];
-        $asunto = $_POST['asunto'];
-        $mensaje = $_POST['mensaje'];
-        mail($email, $asunto, $mensaje);
+
+    if(!empty($nombre) && !empty($email) && !empty($asunto) && !empty($mensaje)) {
+        
+
+        if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            
+
+            $resultado = enviarEmailContacto($nombre, $email, $asunto, $mensaje);
+            
+            if($resultado['success']) {
+                $mensajeExito = "¡Mensaje enviado exitosamente! Te responderemos pronto.";
+            } else {
+                $mensajeError = "Error al enviar el mensaje: " . $resultado['error'];
+            }
+            
+        } else {
+            $mensajeError = "El formato del email no es válido.";
+        }
+        
+    } else {
+        $mensajeError = "Todos los campos son obligatorios.";
     }
-
- ?>
-
-
-
+}
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -23,27 +46,21 @@
     <link rel="stylesheet" href="../Estilos/estilos.css">
     <link rel="stylesheet" href="../Estilos/contactoEstilos.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-   
 </head>
 
 <body>
     <?php 
-
         if(!isset($_SESSION['usuario'])) {
             include 'navNoRegistrado.php';
-               
         } else if($_SESSION['tipoUsuario'] == 'cliente') {
-            
-                include 'navCliente.php';  
-            }
-            
-        else if($_SESSION['tipoUsuario'] == 'dueño de local') {
-                include 'navDueño.php';  
-            }
-        else {
-                include 'navAdmin.php';  
-            }
+            include 'navCliente.php';  
+        } else if($_SESSION['tipoUsuario'] == 'dueño de local') {
+            include 'navDueño.php';  
+        } else {
+            include 'navAdmin.php';  
+        }
     ?>
+    
     <!-- Header -->
     <div class="header-section" style="background-image: url('../Footage/Galeria2.png');">
         <div class="container">
@@ -56,9 +73,24 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
+                
+                <?php if(!empty($mensajeExito)): ?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>¡Éxito!</strong> <?php echo $mensajeExito; ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                <?php endif; ?>
+                
+                <?php if(!empty($mensajeError)): ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Error:</strong> <?php echo $mensajeError; ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                <?php endif; ?>
+                
                 <div class="form-container">
                     <div class="form-header">
-                        <h2> Envíanos tu mensaje</h2>
+                        <h2>Envíanos tu mensaje</h2>
                     </div>
                     <div class="form-body">
                         <form action="#" method="POST" id="contactForm">
@@ -85,12 +117,12 @@
                                     </div>
                                 </div>
                             </div>
+                            
                             <!-- Asunto -->
                             <div class="input-group-custom">
                                 <label for="asunto" class="form-label">
                                     Asunto <span class="required">*</span>
                                 </label>
-                                
                                 <input type="text" class="form-control with-icon" id="asunto" name="asunto" 
                                        placeholder="Escribe el asunto de tu mensaje" required>
                             </div>
@@ -103,6 +135,7 @@
                                 <textarea class="form-control" id="mensaje" name="mensaje" rows="6" 
                                           placeholder="Escribe aquí tu mensaje detallado..." required></textarea>
                             </div>
+                            
                             <!-- Botón Enviar -->
                             <button type="submit" class="btn-enviar" name="enviar">
                                 Enviar Mensaje
@@ -112,10 +145,10 @@
                 </div>
             </div>
         </div>
-
-
-
-    </div>    <?php include 'footer.php'; ?>
-     
+    </div>
+    
+    <?php include 'footer.php'; ?>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

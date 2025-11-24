@@ -205,15 +205,21 @@ if(isset($_POST['solicitarPromo'])){
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <style>
+    :root{
+        
+        --color-dorado: #EED284;
+        --color-dorado-oscuro: #DAB561;
+        --color-negro: #333333;
+        --color-blanco: #FFFFFF;
+        --color-verde: #355B38;
+
+    }
     .list-group-item.active
         {
             background-color: #DAB561 !important;
             border-color: #DAB561 !important;
             color: #000000 !important;
         }
-    a{
-        color:color: var(--bs-body-color) !important;
-    }
     .page-item.active .page-link {
         background-color: var(--color-dorado-oscuro);
         border-color: var(--color-dorado-oscuro);
