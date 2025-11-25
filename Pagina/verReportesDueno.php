@@ -147,9 +147,7 @@ function contarSolicitudes($codPromo, $estado = null){
                         </h2>
                         <p class="text-muted mb-0">Gestión de Promociones</p>
                     </div>
-                    <a href="crearPromocion.php" class="btn btn-primary">
-                        <i class="bi bi-plus-circle me-2"></i>Nueva Promoción
-                    </a>
+                    
                 </div>
             </div>
         </div>

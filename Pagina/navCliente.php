@@ -119,12 +119,12 @@
             </ul>
             
             <!-- Formulario de búsqueda con mejor responsividad -->
-            <form class="d-flex flex-column flex-lg-row mt-3 mt-lg-0 position-relative" action="tablaPromocionesXDueno.php" method="POST" style="width: 100%; max-width: 400px;">
-                <div class="position-relative flex-grow-1 mb-2 mb-lg-0 me-lg-2">
+            <form class="d-flex flex-column flex-sm-row mt-3 mt-lg-0 gap-2 position-relative" action="tablaPromocionesXDueno.php" method="POST" style="width: 100%; max-width: 400px;">
+                <div class="position-relative flex-grow-1">
                     <input id="buscar" class="form-control" type="search" placeholder="Buscar tiendas..." aria-label="Search" name="nombreLocal">
-                    <div id="resultado" class="list-group position-absolute w-100" style="z-index: 1050;"></div>
+                    <div id="resultado" class="list-group position-absolute w-100 mt-1" style="z-index: 1050; max-height: 300px; overflow-y: auto;"></div>
                 </div>
-                <button class="btn" id="boton-nav" type="submit">Buscar</button>
+                <button class="btn" id="boton-nav" type="submit" style="white-space: nowrap;">Buscar</button>
             </form>
         </div>
     </div>

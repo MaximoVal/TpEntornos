@@ -77,19 +77,29 @@ if(isset($_POST['enviar'])) {
 <main class="container-fluid my-4">
         <div class="row">
             <!-- MENÚ LATERAL -->
-            <aside class="col-md-4 col-lg-3 mb-4">
+            <aside class="col-12 col-md-3 mb-3">
                 <div class="card sidebar-links">
-                <div class="card-body d-flex flex-column justify-content-start">
-                    <h3 class="card-title title">Panel administrador </h3>
-                    <div class="list-group">
-                        <a href="duenosAdmin(SDB).php" class="list-group-item list-group-item-action ">Administrar dueños</a>
-                        <a href="administraLocalAdmin.php" class="list-group-item list-group-item-action ">Administrar locales</a>
-                        <a href="administrarPromocionesAdmin.php" class="list-group-item list-group-item-action ">Administrar promociones</a>
-                        <a href="creaLocalAdmin.php" class="list-group-item list-group-item-action ">Crear local</a>
-                        <a href="crearNovedad.php" class="list-group-item list-group-item-action active">Crear novedad</a>
-                        <a href="eliminaLocalAdmin.php" class="list-group-item list-group-item-action">Eliminar local</a>   
+                    <div class="card-body d-flex flex-column justify-content-start">
+                        <!-- Botón desplegable para móviles -->
+                        <button class="btn btn-primary w-100 d-md-none mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#adminMenu" aria-expanded="false" aria-controls="adminMenu">
+                            <i class="bi bi-menu-button-wide me-2"></i>Panel administrador
+                        </button>
+                        
+                        <!-- Título para desktop -->
+                        <h3 class="card-title title d-none d-md-block">Panel administrador</h3>
+                        
+                        <!-- Menú colapsable -->
+                        <div class="collapse d-md-block" id="adminMenu">
+                            <div class="list-group">
+                                <a href="duenosAdmin(SDB).php" class="list-group-item list-group-item-action">Administrar dueños</a>
+                                <a href="administraLocalAdmin.php" class="list-group-item list-group-item-action ">Administrar locales</a>
+                                <a href="administrarPromocionesAdmin.php" class="list-group-item list-group-item-action">Administrar promociones</a>
+                                <a href="creaLocalAdmin.php" class="list-group-item list-group-item-action">Crear local</a>
+                                <a href="crearNovedad.php" class="list-group-item list-group-item-action active">Crear novedad</a>
+                                <a href="eliminaLocalAdmin.php" class="list-group-item list-group-item-action">Eliminar local</a>   
+                            </div>
+                        </div>
                     </div>
-                </div>
                 </div>
             </aside>
 

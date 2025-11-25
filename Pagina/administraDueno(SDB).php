@@ -45,10 +45,46 @@ if(isset($_GET['accion'])){
     <main class="container-fluid my-4">
     <div class="row">
         <!-- BARRA LATERAL -->
-        <aside class="col-md-3 col-lg-2 mb-4">
+        <aside class="col-md-3 col-lg-2 mb-4  ">
+            <!-- Botones desplegables para móviles (en una fila) -->
+            <div class="d-md-none mb-3 mt-3 d-flex gap-2">
+                <?php if(isset($accion)){ ?>
+                <button class="btn flex-fill d-flex flex-row align-items-center justify-content-center gap-2 py-2" 
+                        type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#panelAdmin" 
+                        aria-expanded="false" 
+                        aria-controls="panelAdmin"
+                        style="background-color: var(--color-dorado); color: var(--color-negro); font-weight: 600; font-size: 0.85rem;">
+                    <i class="bi bi-gear-fill d-inline" style="font-size: 1.2rem;"></i>
+                    <span>Panel</span>
+                </button>
+                <?php } ?>
+                <button class="btn flex-fill d-flex flex-row align-items-center justify-content-center gap-2 py-2" 
+                        type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#infoLocal" 
+                        aria-expanded="false" 
+                        aria-controls="infoLocal"
+                        style="background-color: var(--color-dorado); color: var(--color-negro); font-weight: 600; font-size: 0.85rem;">
+                    <i class="bi bi-shop mb-1" style="font-size: 1.2rem;"></i>
+                    <span>Local</span>
+                </button>
+                <button class="btn flex-fill d-flex flex-row align-items-center justify-content-center gap-2 py-2" 
+                        type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#infoDueno" 
+                        aria-expanded="false" 
+                        aria-controls="infoDueno"
+                        style="background-color: var(--color-dorado); color: var(--color-negro); font-weight: 600; font-size: 0.85rem;">
+                    <i class="bi bi-person-vcard mb-1" style="font-size: 1.2rem;"></i>
+                    <span>Dueño</span>
+                </button>
+            </div>
+
             <!-- Panel de Administración (Sidebar) -->
             <?php if(isset($accion)){ ?>
-            <div class="mb-3 p-4 bg-white shadow-sm rounded-3" style="border-left: 4px solid var(--color-dorado);">
+            <div class="mb-3 p-4 bg-white shadow-sm rounded-3 collapse d-md-block" id="panelAdmin" style="border-left: 4px solid var(--color-dorado);">
                 <h5 class="mb-4 d-flex align-items-center" style="color:var(--color-negro); font-weight:600;">
                     <i class="bi bi-gear-fill me-2" style="color: var(--color-dorado-oscuro); font-size: 1.3rem;"></i>
                     Panel de Administración
@@ -56,24 +92,24 @@ if(isset($_GET['accion'])){
                 <ul class="list-unstyled">
                     <li class="mb-2">
                         <a href="administraDueno(SDB).php?accion=adminPromos" 
-                           class="text-decoration-none d-flex align-items-center py-2 px-3 rounded-2 transition-all" 
-                           style="<?php echo ($accion == 'adminPromos')? 'background-color: var(--color-dorado); color: var(--color-negro); font-weight: 600;' : 'color: var(--color-gris); background-color: #f8f9fa;'; ?>">
+                        class="text-decoration-none d-flex align-items-center py-2 px-3 rounded-2 transition-all" 
+                        style="<?php echo ($accion == 'adminPromos')? 'background-color: var(--color-dorado); color: var(--color-negro); font-weight: 600;' : 'color: var(--color-gris); background-color: #f8f9fa;'; ?>">
                             <i class="bi bi-tag-fill me-2"></i>
                             Administrar Promociones
                         </a>
                     </li>
                     <li class="mb-2">
                         <a href="administraDueno(SDB).php?accion=verSolicitudesDueno" 
-                           class="text-decoration-none d-flex align-items-center py-2 px-3 rounded-2 transition-all" 
-                           style="<?php echo ($accion == 'verSolicitudesDueno')? 'background-color: var(--color-dorado); color: var(--color-negro); font-weight: 600;' : 'color: var(--color-gris); background-color: #f8f9fa;'; ?>">
+                        class="text-decoration-none d-flex align-items-center py-2 px-3 rounded-2 transition-all" 
+                        style="<?php echo ($accion == 'verSolicitudesDueno')? 'background-color: var(--color-dorado); color: var(--color-negro); font-weight: 600;' : 'color: var(--color-gris); background-color: #f8f9fa;'; ?>">
                             <i class="bi bi-check-square me-3"></i>
                             Solicitudes de promociones
                         </a>
                     </li>
                     <li>
                         <a href="administraDueno(SDB).php?accion=verReportes" 
-                           class="text-decoration-none d-flex align-items-center py-2 px-3 rounded-2 transition-all" 
-                           style="<?php echo ($accion == 'verReportes')? 'background-color: var(--color-dorado); color: var(--color-negro); font-weight: 600;' : 'color: var(--color-gris); background-color: #f8f9fa;'; ?>">
+                        class="text-decoration-none d-flex align-items-center py-2 px-3 rounded-2 transition-all" 
+                        style="<?php echo ($accion == 'verReportes')? 'background-color: var(--color-dorado); color: var(--color-negro); font-weight: 600;' : 'color: var(--color-gris); background-color: #f8f9fa;'; ?>">
                             <i class="bi bi-file-earmark-bar-graph me-2"></i>
                             Reportes
                         </a>
@@ -81,8 +117,9 @@ if(isset($_GET['accion'])){
                 </ul>
             </div>
             <?php } ?>
+            
             <!-- Información del Local -->
-            <div class="p-4 bg-white shadow-sm rounded-3 mb-3" style="border-left: 4px solid var(--color-dorado);">
+            <div class="p-4 bg-white shadow-sm rounded-3 mb-3 collapse d-md-block" id="infoLocal" style="border-left: 4px solid var(--color-dorado);">
                 <h5 class="mb-4 d-flex align-items-center" style="color:var(--color-negro); font-weight:600;">
                     <i class="bi bi-shop me-2" style="color: var(--color-dorado-oscuro); font-size: 1.3rem;"></i> 
                     Información del Local
@@ -111,7 +148,7 @@ if(isset($_GET['accion'])){
             </div>
 
             <!-- Información del Dueño -->
-            <div class="p-4 bg-white shadow-sm rounded-3" style="border-left: 4px solid var(--color-dorado);">
+            <div class="p-4 bg-white shadow-sm rounded-3 collapse d-md-block" id="infoDueno" style="border-left: 4px solid var(--color-dorado);">
                 <h5 class="mb-4 d-flex align-items-center" style="color:var(--color-negro); font-weight:600;">
                     <i class="bi bi-person-vcard me-2" style="color: var(--color-dorado-oscuro); font-size: 1.3rem;"></i> 
                     Información del Dueño
@@ -129,8 +166,6 @@ if(isset($_GET['accion'])){
                     <p class="mb-0 fw-semibold">Email: <small class="text-muted "><?php echo $dueno['nombreUsuario']; ?></small></p>
                 </div>
             </div>
-
-            
         </aside>
 
         <!-- CONTENIDO PRINCIPAL -->

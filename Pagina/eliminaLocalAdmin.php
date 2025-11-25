@@ -55,19 +55,29 @@ if(isset($_POST['elimina-local'])){
       <!-- SIDEBAR (izq) -->
       <aside class="col-12 col-md-3 mb-3">
         <div class="card sidebar-links">
-                <div class="card-body d-flex flex-column justify-content-start">
-                    <h3 class="card-title title">Panel administrador </h3>
+            <div class="card-body d-flex flex-column justify-content-start">
+                <!-- Botón desplegable para móviles -->
+                <button class="btn btn-primary w-100 d-md-none mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#adminMenu" aria-expanded="false" aria-controls="adminMenu">
+                    <i class="bi bi-menu-button-wide me-2"></i>Panel administrador
+                </button>
+                
+                <!-- Título para desktop -->
+                <h3 class="card-title title d-none d-md-block">Panel administrador</h3>
+                
+                <!-- Menú colapsable -->
+                <div class="collapse d-md-block" id="adminMenu">
                     <div class="list-group">
-                        <a href="duenosAdmin(SDB).php" class="list-group-item list-group-item-action ">Administrar dueños</a>
+                        <a href="duenosAdmin(SDB).php" class="list-group-item list-group-item-action">Administrar dueños</a>
                         <a href="administraLocalAdmin.php" class="list-group-item list-group-item-action ">Administrar locales</a>
-                        <a href="administrarPromocionesAdmin.php" class="list-group-item list-group-item-action ">Administrar promociones</a>
-                        <a href="creaLocalAdmin.php" class="list-group-item list-group-item-action ">Crear local</a>
-                        <a href="crearNovedad.php" class="list-group-item list-group-item-action ">Crear novedad</a>
+                        <a href="administrarPromocionesAdmin.php" class="list-group-item list-group-item-action">Administrar promociones</a>
+                        <a href="creaLocalAdmin.php" class="list-group-item list-group-item-action">Crear local</a>
+                        <a href="crearNovedad.php" class="list-group-item list-group-item-action">Crear novedad</a>
                         <a href="eliminaLocalAdmin.php" class="list-group-item list-group-item-action active">Eliminar local</a>   
                     </div>
                 </div>
-                </div>
-      </aside>
+            </div>
+        </div>
+    </aside>
 
       <!-- CONTENIDO PRINCIPAL (centro) -->
        <section class="col-12 col-md-8 mb-3">
@@ -77,42 +87,45 @@ if(isset($_POST['elimina-local'])){
 
             <!-- Formulario para editar datos (client-side) -->
             <form id="editLocalForm" class="row g-2" method="POST" action="">
-              <div class="col-12">
-                <label class="form-label">Nombre</label>
-                <input type="text" id="buscar" class="form-control" placeholder="Buscar local..." name="nombre">
-                <div id="resultado" class="list-group"></div>
-                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                <script>
-                $(document).ready(function(){
-                    $("#buscar").on("keyup", function(){
-                        let texto = $(this).val();
-                        
-                        if(texto.length >= 1){
-                        $.post("buscarLocal.php", { query: texto }, function(data){
-                            $("#resultado").html(data).show();
-                        });
-                        } else {
-                            $("#resultado").hide();
-                        }
-                    });
+  <div class="col-12">
+    <label class="form-label">Nombre</label>
+    <input type="text" id="buscar" class="form-control" placeholder="Buscar local..." name="nombre">
+    <div id="resultado" class="list-group"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function(){
+        $("#buscar").on("keyup", function(){
+            let texto = $(this).val();
+            
+            if(texto.length >= 1){
+            $.post("buscarLocal.php", { query: texto }, function(data){
+                $("#resultado").html(data).show();
+            });
+            } else {
+                $("#resultado").hide();
+            }
+        });
 
-                    // Cuando hago click en una sugerencia
-                    $(document).on("click", ".item", function(){
-                        $("#buscar").val($(this).text());
-                        $("#resultado").hide();
-                    });
-                });
-                </script>
-              
-              
-              
-              </div>
+        // Cuando hago click en una sugerencia
+        $(document).on("click", ".item", function(){
+            $("#buscar").val($(this).text());
+            $("#resultado").hide();
+        });
 
-              <div class="col-12 d-flex gap-2 mt-2">
-                <button class="btn btn-danger btn-sm" name="elimina-local">Eliminar</button>
-                <button type="button" id="btnReset" class="btn btn-outline-secondary">Reset</button>
-              </div>
-            </form>
+        // Cuando hago click en Reset
+        $("#btnReset").on("click", function(){
+            $("#buscar").val("");
+            $("#resultado").hide();
+        });
+    });
+    </script>
+  </div>
+
+  <div class="col-12 d-flex gap-2 mt-2">
+    <button class="btn btn-danger btn-sm" name="elimina-local">Eliminar</button>
+    <button type="button" id="btnReset" class="btn btn-outline-secondary" name="reset">Reset</button>
+  </div>
+</form>
 
           </div>
         </div>

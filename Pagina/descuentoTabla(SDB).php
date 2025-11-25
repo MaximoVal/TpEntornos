@@ -251,43 +251,53 @@ if(isset($_POST['solicitarPromo'])){
   <div class="row">
     <!-- PANEL LATERAL DE CATEGORÍAS -->
     <aside class="col-md-3 col-lg-2 mb-4">
-      <div class="p-3 bg-white shadow rounded-3">
-        <h3 class="mb-3 text-center" style="color: var(--color-negro); font-weight:600;">Categorías</h3>
-        <ul class="list-unstyled">
-          <li>
-              <a href="descuentoTabla(SDB).php?categoria=Deporte" class="text-decoration-none d-block py-2 text-center fw-bold" style="<?php echo ($categoria == 'Deporte')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">
-                  Deporte
-              </a>
-          </li>          
-          <li>
-              <a href="descuentoTabla(SDB).php?categoria=Entretenimiento" class="text-decoration-none d-block py-2 text-center fw-bold" style="<?php echo ($categoria == 'Entretenimiento')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">
-                  Entretenimiento
-              </a>
-          </li> 
-          
-          <li>
-              <a href="descuentoTabla(SDB).php?categoria=Gastronomia" class="text-decoration-none d-block py-2 text-center fw-bold" style="<?php echo ($categoria == 'Gastronomia')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">
-                  Gastronomia
-              </a>
-          </li> 
-          <li>
-              <a href="descuentoTabla(SDB).php?categoria=Indumentaria" class="text-decoration-none d-block py-2 text-center fw-bold" style="<?php echo ($categoria == 'Indumentaria')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">
-                  Indumentaria
-              </a>
-          </li> 
-          <li>
-              <a href="descuentoTabla(SDB).php?categoria=Tecnologia" class="text-decoration-none d-block py-2 text-center fw-bold" style="<?php echo ($categoria == 'Tecnologia')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">
-                  Tecnologia
-              </a>
-          </li>
-          <li>
-              <a href="descuentoTabla(SDB).php?categoria=Otros" class="text-decoration-none d-block py-2 text-center fw-bold" style="<?php echo ($categoria == 'Otros')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">
-                  Otros
-              </a>
-          </li> 
-        </ul>
-      </div>
-    </aside>
+                <div class="p-3 bg-white shadow rounded-3">
+                    <!-- Botón desplegable para móviles -->
+                    <button class="btn w-100 d-md-none mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#categoriesMenu" aria-expanded="false" aria-controls="categoriesMenu" style="background-color: var(--color-dorado-oscuro); color: white; font-weight: 600;">
+                        <i class="bi bi-list me-2"></i>Categorías
+                    </button>
+                    
+                    <!-- Título para desktop -->
+                    <h3 class="mb-3 text-center d-none d-md-block" style="color: var(--color-negro); font-weight:600;">Categorías</h3>
+                    
+                    <!-- Menú colapsable -->
+                    <div class="collapse d-md-block" id="categoriesMenu">
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="descuentoTabla(SDB).php?categoria=Deporte" class="text-decoration-none d-block py-2 text-center fw-bold" style="<?php echo ($categoria == 'Deporte')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">
+                                    Deporte
+                                </a>
+                            </li>          
+                            <li>
+                                <a href="descuentoTabla(SDB).php?categoria=Entretenimiento" class="text-decoration-none d-block py-2 text-center fw-bold" style="<?php echo ($categoria == 'Entretenimiento')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">
+                                    Entretenimiento
+                                </a>
+                            </li> 
+                            <li>
+                                <a href="descuentoTabla(SDB).php?categoria=Gastronomia" class="text-decoration-none d-block py-2 text-center fw-bold" style="<?php echo ($categoria == 'Gastronomia')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">
+                                    Gastronomía
+                                </a>
+                            </li> 
+                            <li>
+                                <a href="descuentoTabla(SDB).php?categoria=Indumentaria" class="text-decoration-none d-block py-2 text-center fw-bold" style="<?php echo ($categoria == 'Indumentaria')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">
+                                    Indumentaria
+                                </a>
+                            </li> 
+                            <li>
+                                <a href="descuentoTabla(SDB).php?categoria=Tecnologia" class="text-decoration-none d-block py-2 text-center fw-bold" style="<?php echo ($categoria == 'Tecnologia')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">
+                                    Tecnología
+                                </a>
+                            </li>
+                            <li>
+                                <a href="descuentoTabla(SDB).php?categoria=Otros" class="text-decoration-none d-block py-2 text-center fw-bold" style="<?php echo ($categoria == 'Otros')? 'color: var(--color-dorado-oscuro); text-decoration: underline;  font-size: 1.2rem;' : 'color: var(--color-gris);'; ?>">
+                                    Otros
+                                </a>
+                            </li> 
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+    
 
     <!-- CONTENIDO PRINCIPAL -->
     <section class="col-md-9 col-lg-10" method="POST">

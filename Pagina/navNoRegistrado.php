@@ -53,32 +53,27 @@
 
 <nav class="navbar navbar-expand-lg navbar-custom">
     <div class="container-fluid">
-
-            <a class="navbar-brand" href="index.php">
-                <img src="../Footage/Logo.png" alt="Paseo de la Fortuna Logo"style="margin=0;border:none;">
-            </a>
-
-
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="background-color: #DAB561; border: none;">
-                    <i class="bi bi-list" style="font-size: 2rem; color: #000;"></i>
-                </button>
-
-
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-      <ul class="navbar-nav align-items-center">
-        <li class="nav-item"><a class="nav-link px-3 fw-semibold" href="index.php" style="color: #333;">Inicio</a></li>
-        <li class="nav-item"><a class="nav-link px-3 fw-semibold" href="contacto.php" style="color: #333;">Contacto</a></li>
-
-
-        <li class="nav-item ms-3">
-        <a href="login.php" class="nav-link p-0">
-            <div class="d-flex align-items-center justify-content-center user-icon-wrapper">
-            <i class="bi bi-person-fill"></i>
-            </div>
+        <a class="navbar-brand" href="index.php">
+            <img src="../Footage/Logo.png" alt="Paseo de la Fortuna Logo" style="margin:0; border:none;">
         </a>
-        </li>
-      </ul>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" style="background-color: #DAB561; border: none;">
+            <i class="bi bi-list" style="font-size: 2rem; color: #000;"></i>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item"><a class="nav-link px-3 fw-semibold" href="index.php" style="color: #333;">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link px-3 fw-semibold" href="contacto.php" style="color: #333;">Contacto</a></li>
+                <li class="nav-item ms-3">
+                    <a href="login.php" class="nav-link p-0">
+                        <div class="d-flex align-items-center justify-content-center user-icon-wrapper">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
 </nav>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
