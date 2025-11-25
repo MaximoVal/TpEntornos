@@ -2,60 +2,88 @@
     session_start();
     include("funciones.php");
     $mensaje = "";
+    $errores = [];
 
     // Verifica si se ha enviado el formulario
     if(isset($_POST['enviar'])){
-        $email = $_POST['email'];
-        $password = $_POST['contraseña'];
-        $nombre = $_POST['nombre'];
-        $apellido = $_POST['apellido'];
+        // VALIDACIONES DEL SERVIDOR
         
-        // Obtiene el valor del radio button seleccionado
-        $tipo = $_POST['tipoUsuario'];
+        // 1. Validar que todos los campos existan
+        if(!isset($_POST['email']) || !isset($_POST['contraseña']) || 
+           !isset($_POST['nombre']) || !isset($_POST['apellido']) || !isset($_POST['tipoUsuario'])){
+            $errores[] = "Todos los campos son obligatorios.";
+        }
         
-
-        // Verificar si el usuario ya existe
-        $sql = "SELECT * FROM usuarios WHERE nombreUsuario='$email'";
-        $resultado = consultaSQL($sql);
+        // 2. Obtener y limpiar datos
+        $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+        $password = isset($_POST['contraseña']) ? $_POST['contraseña'] : '';
+        $nombre = isset($_POST['nombre']) ? trim($_POST['nombre']) : '';
+        $apellido = isset($_POST['apellido']) ? trim($_POST['apellido']) : '';
+        $tipo = isset($_POST['tipoUsuario']) ? $_POST['tipoUsuario'] : '';
         
-        if(mysqli_num_rows($resultado) > 0){
-            // El usuario ya existe
-            $mensaje = "El usuario ya está registrado. Por favor, inicie sesión.";
-        } else {
-            if($tipo == 'cliente'){
+       
+        // 5. Validar email
+        if(empty($email)){
+            $errores[] = "El correo electrónico es obligatorio.";
+        } elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+            $errores[] = "El formato del correo electrónico no es válido.";
+        
+        }
+        if(empty($password)){
+            $errores[] = "La contraseña es obligatoria.";
+        } 
 
-                $sqlInsert = "INSERT INTO usuarios (nombre, apellido, nombreUsuario, contraseña, tipoUsuario, categoriaCliente) VALUES ('$nombre', '$apellido', '$email', '$password', '$tipo', 'Inicial')";
-
-                if(consultaSQL($sqlInsert)){
-                    $_SESSION['usuario'] = $email;
-                    $_SESSION['tipoUsuario'] = $tipo;
-                    header("Location: index.php");
-                    exit();
-                } else {
-                    $mensaje = "Error al registrar usuario. Inténtelo de nuevo.";
-                }
+        if(empty($errores)){
+           
+            
+            // Hash de la contraseña
+            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+            
+            // Verificar si el usuario ya existe
+            $sql = "SELECT * FROM usuarios WHERE nombreUsuario='$email'";
+            $resultado = consultaSQL($sql);
+            
+            if(mysqli_num_rows($resultado) > 0){
+                $mensaje = "El usuario ya está registrado. Por favor, inicie sesión.";
             } else {
+                if($tipo == 'cliente'){
+                    $sqlInsert = "INSERT INTO usuarios (nombre, apellido, nombreUsuario, contraseña, tipoUsuario, categoriaCliente) 
+                                  VALUES ('$nombre', '$apellido', '$email', '$passwordHash', '$tipo', 'Inicial')";
 
-                if($tipo == 'dueño de local'){
-                    $localNoLocal = 'no';
-                    $pendienteAprobacion = 'si';
-                    $sqlInsert = "INSERT INTO usuarios (nombre, apellido, nombreUsuario, contraseña, tipoUsuario, localNoLocal, pendiente) VALUES ('$nombre', '$apellido', '$email', '$password', '$tipo', '$localNoLocal', '$pendienteAprobacion')";
-                }
-                else {
-                    $sqlInsert = "INSERT INTO usuarios (nombre, apellido, nombreUsuario, contraseña, tipoUsuario) VALUES ('$nombre', '$apellido', '$email', '$password', '$tipo')";
-                } 
-
-                
-                if(consultaSQL($sqlInsert)){
-                    $_SESSION['usuario'] = $email;
-                    $_SESSION['tipoUsuario'] = $tipo;
-                    header("Location: index.php");
-                    exit();
+                    if(consultaSQL($sqlInsert)){
+                        $_SESSION['usuario'] = $email;
+                        $_SESSION['tipoUsuario'] = $tipo;
+                        header("Location: index.php");
+                        exit();
+                    } else {
+                        $mensaje = "Error al registrar usuario. Inténtelo de nuevo.";
+                    }
                 } else {
-                    $mensaje = "Error al registrar usuario. Inténtelo de nuevo.";
+                    if($tipo == 'dueño de local'){
+                        $localNoLocal = 'no';
+                        $pendienteAprobacion = 'si';
+                        $sqlInsert = "INSERT INTO usuarios (nombre, apellido, nombreUsuario, contraseña, tipoUsuario, localNoLocal, pendiente) 
+                                      VALUES ('$nombre', '$apellido', '$email', '$passwordHash', '$tipo', '$localNoLocal', '$pendienteAprobacion')";
+                    } else {
+                        $sqlInsert = "INSERT INTO usuarios (nombre, apellido, nombreUsuario, contraseña, tipoUsuario) 
+                                      VALUES ('$nombre', '$apellido', '$email', '$passwordHash', '$tipo')";
+                    } 
+
+                    if(consultaSQL($sqlInsert)){
+                        $_SESSION['usuario'] = $email;
+                        $_SESSION['tipoUsuario'] = $tipo;
+                        header("Location: index.php");
+                        exit();
+                    } else {
+                        $mensaje = "Error al registrar usuario. Inténtelo de nuevo.";
+                    }
                 }
             }
+        } else {
+            // Mostrar todos los errores
+            $mensaje = implode("<br>", $errores);
         }
+        
     }
 ?>
 
@@ -64,12 +92,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Paseo de la Fortuna</title>
+    <title>Registro - Paseo de la Fortuna</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../Estilos/estilos.css">
     <link rel="stylesheet" href="../Estilos/loginEstilos.css">
-
+    <style>
+        .invalid-feedback {
+            display: block;
+        }
+        .password-requirements {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-custom">
@@ -84,9 +121,6 @@
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="index.php">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="sobreNosotros.php">Sobre Nosotros</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="contacto.php">Contacto</a>
@@ -163,5 +197,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    
 </body>
 </html>

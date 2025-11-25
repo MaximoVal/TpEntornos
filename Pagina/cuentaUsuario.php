@@ -29,7 +29,9 @@
 
         // Verificar si se quiere cambiar la contraseña
         if(!empty($contraseñaNueva)){
-            if($contraseñaActual === $usuario['contraseña']){
+            $contraseñaProtegida = $usuario['contraseña'];
+            if(password_verify($contraseñaActual, $contraseñaProtegida)){
+                $contraseñaNueva= password_hash($contraseñaNueva, PASSWORD_DEFAULT);
                 // Contraseña actual correcta, actualizamos todo incluyendo la nueva contraseña
                 $sqlActualizar = "UPDATE usuarios 
                                 SET nombre='$nombre', apellido='$apellido', nombreUsuario='$emailNuevo', contraseña='$contraseñaNueva' 
@@ -37,9 +39,9 @@
                 consultaSQL($sqlActualizar);
                 $mensaje = "Datos y contraseña actualizados correctamente.";
             } else {
-                // Contraseña actual incorrecta
+                
                 $mensaje = "Contraseña actual incorrecta. No se actualizó la contraseña.";
-                // Solo actualizamos los demás campos
+                
                 $sqlActualizar = "UPDATE usuarios 
                                 SET nombre='$nombre', apellido='$apellido', nombreUsuario='$emailNuevo' 
                                 WHERE nombreUsuario='$email'";
@@ -194,7 +196,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="password-nueva">Nueva Contraseña</label>
-                                <input type="password" id="password-nueva" placeholder="Mínimo 8 caracteres" name="contraseña-nueva">
+                                <input type="password" id="password-nueva" placeholder="Ingrese la nueva contraseña" name="contraseña-nueva">
                             </div>
                         </div>
                     </div>

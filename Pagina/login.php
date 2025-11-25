@@ -1,39 +1,66 @@
 <?php
     session_start();
     include("funciones.php");
-    $mensaje="";
+    $mensaje = "";
+    $errores = [];
 
 if(isset($_POST['enviar'])){
-    $email = $_POST['email'];
-    $password = $_POST['contraseña'];
+    // ===================================
+    // VALIDACIONES DEL LADO DEL SERVIDOR
+    // ===================================
+    
+    // 1. Validar que los campos existan y no estén vacíos
+    if(empty($_POST['email'])){
+        $errores[] = "El correo electrónico es obligatorio";
+    }
+    
+    if(empty($_POST['contraseña'])){
+        $errores[] = "La contraseña es obligatoria";
+    }
+    
+    // 2. Validar formato de email
+    if(!empty($_POST['email']) && !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
+        $errores[] = "El formato del correo electrónico no es válido";
+    }
+    
+    // 4. Sanitizar datos (limpiar caracteres peligrosos)
+    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    $password = trim($_POST['contraseña']);
+    
+    // Si no hay errores, proceder con la autenticación
+    if(empty($errores)){
+        
+        // Buscar usuario en la base
+        $sql = "SELECT * FROM usuarios WHERE nombreUsuario='$email'";
+        $resultado = consultaSQL($sql);
 
-    // Buscar usuario en la base
-    $sql = "SELECT * FROM usuarios WHERE nombreUsuario='$email'";
-    $resultado = consultaSQL($sql);
-
-    if(mysqli_num_rows($resultado) > 0){
-        // El usuario existe, ahora validamos contraseña
-        $usuario = mysqli_fetch_assoc($resultado);
-        if($usuario['contraseña'] === $password){
-            $_SESSION['usuario'] = $email;
-            $_SESSION['tipoUsuario'] = $usuario['tipoUsuario'];
+        if(mysqli_num_rows($resultado) > 0){
+            // El usuario existe, ahora validamos contraseña
+            $usuario = mysqli_fetch_assoc($resultado);
             
-            // Redirigir a la página original si existe
-            if(isset($_SESSION['redirect_after_login'])){
-                $redirect = $_SESSION['redirect_after_login'];
-                unset($_SESSION['redirect_after_login']);
-                header("Location: $redirect");
-                exit();
+            // IMPORTANTE: Deberías usar password_verify() si usas password_hash()
+            // Comparación básica (no recomendado para producción)
+            $contraseñaProtegida = $usuario['contraseña'];
+            if(password_verify($password, $contraseñaProtegida)){
+                $_SESSION['usuario'] = $email;
+                $_SESSION['tipoUsuario'] = $usuario['tipoUsuario'];
+                
+                // Redirigir a la página original si existe
+                if(isset($_SESSION['redirect_after_login'])){
+                    $redirect = $_SESSION['redirect_after_login'];
+                    unset($_SESSION['redirect_after_login']);
+                    header("Location: $redirect");
+                    exit();
+                } else {
+                    header("Location: index.php");
+                    exit();
+                }
             } else {
-                header("Location: index.php");
-                exit();
+                $errores[] = "Contraseña incorrecta";
             }
         } else {
-            $mensaje="Contraseña Incorrecta";
+            $errores[] = "Usuario no registrado, por favor regístrese";
         }
-    } else {
-        // El usuario no existe
-        $mensaje="Usuario no registrado, por favor regístrese.";
     }
 }
 ?>
@@ -43,32 +70,46 @@ if(isset($_POST['enviar'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Paseo de la Fortuna</title>
+    <title>Iniciar Sesión - Paseo de la Fortuna</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../Estilos/estilos.css">
     <link rel="stylesheet" href="../Estilos/loginEstilo.css">
-    
-    <!-- AGREGADO: SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</head>
-<style>
-    * {
-        user-select:none;
-    }
-    .btn-primary {
-        background: linear-gradient(135deg, var(--color-dorado) 0%, var(--color-dorado-oscuro) 100%);
-        border: none;
-        border-radius: 8px;
-        padding: 12px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        color: #333;
-    }
-</style>
-<body>
     
-    <!-- Navbar fijo en la parte superior -->
+    <style>
+        * {
+            user-select: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-dorado) 0%, var(--color-dorado-oscuro) 100%);
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: #333;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        .error-message.show {
+            display: block;
+        }
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+        .form-control.is-valid {
+            border-color: #198754;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid">
             <a class="navbar-brand" href="index.html">
@@ -90,40 +131,56 @@ if(isset($_POST['enviar'])){
         </div>
     </nav>
 
-    <!-- Contenedor principal centrado -->
+    <!-- Contenedor principal -->
     <div class="container-fluid main-container" style="background-image: url('../Footage/Paseo 4.png');background-size: cover; background-position: center; min-height: 100vh; display: flex; justify-content: center; align-items: center; opacity: 0.95;">
         <div class="card login-card shadow-lg p-4" style="width: 400px; max-width: 90vw;">
             <div class="card-body">
-                <form action="" method="POST">
+                <!-- FORM con validación JavaScript -->
+                <form id="loginForm" action="" method="POST" novalidate>
                     <h3 class="text-center mb-4">
                         <i class="fas fa-user-circle me-2"></i>
                         Iniciar Sesión
                     </h3>
 
+                    <!-- Mostrar errores del servidor -->
+                    <?php if(!empty($errores)): ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <ul class="mb-0">
+                            <?php foreach($errores as $error): ?>
+                                <li><?php echo htmlspecialchars($error); ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    <?php endif; ?>
+
+                    <!-- Campo Email -->
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">
+                        <label for="email" class="form-label">
                             <i class="fas fa-envelope me-1"></i>
                             Correo Electrónico
                         </label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" name="email" 
-                               placeholder="tu@email.com" required aria-describedby="emailHelp">
+                        <input type="email" class="form-control" id="email" name="email" 
+                               placeholder="tu@email.com" required>
+                        <div class="error-message" id="emailError">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <span id="emailErrorText"></span>
+                        </div>
                     </div>
 
+                    <!-- Campo Contraseña -->
                     <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">
+                        <label for="password" class="form-label">
                             <i class="fas fa-lock me-1"></i>
                             Contraseña
                         </label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" 
+                        <input type="password" class="form-control" id="password" 
                                name="contraseña" placeholder="Tu contraseña" required>
-                        
-                        <!-- Mensaje de error PHP -->
-                        <?php if(!empty($mensaje)): ?>
-                        <div class="form-text text-danger mt-2">
+                        <div class="error-message" id="passwordError">
                             <i class="fas fa-exclamation-circle"></i>
-                            <?php echo $mensaje; ?>
+                            <span id="passwordErrorText"></span>
                         </div>
-                        <?php endif; ?>
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100 mb-3" name="enviar">
@@ -131,17 +188,33 @@ if(isset($_POST['enviar'])){
                         Ingresar
                     </button>
                     
-                    <div class="text-center">
+                    <!-- <div class="text-center">
                         <small class="text-muted">
                             <a href="#" class="text-decoration-none">¿Olvidaste tu contraseña?</a>
                         </small>
-                    </div>
+                    </div> -->
                 </form>
                 <hr>
                 <p class="text-center">¿No tenes usuario? <a href="registro.php">Registrarse ahora</a></p>
             </div>
         </div>
     </div>
+
+    <!-- SweetAlert para mensaje de sesión -->
+    <?php if(isset($_SESSION['mensaje_warning'])): ?>
+    <script>
+    Swal.fire({
+        icon: 'warning',
+        title: 'Acceso restringido',
+        text: '<?php echo $_SESSION['mensaje_warning']; ?>',
+        confirmButtonColor: '#DAB561',
+        confirmButtonText: 'Entendido'
+    });
+    </script>
+    <?php 
+        unset($_SESSION['mensaje_warning']); 
+    endif; 
+    ?>
 
     <!-- SweetAlert para mensaje de sesión -->
     <?php if(isset($_SESSION['mensaje_warning'])): ?>
